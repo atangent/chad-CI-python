@@ -2,7 +2,14 @@
 
 | Target Requirement | Test Case ID | Purpose                                                                 |
 |--------------------|--------------|-------------------------------------------------------------------------|
-| R1                 |     1        | Test what happens if the user hasn't logged in - should show login page |
+| R1 | 2000 | Check that login page shows at when user is not logged in |
+| R1 | 2001 | Check that login page has msg 'please login' |
+| R1 | 2002 | Check that user profile page is shown when user is logged in |
+| R1 | 2003 | Check that login form shows email and password field elements |
+| R1 | 2004 | Check that login form can submit POST request to current url |
+| R1 | 2005 | Check that email or password fields cannot be empty |
+| R1 | 2006 | Check that input text in email field follows RFC 5322 |
+| R1 | 2007 | Check that input text in password field follows complexity requirements |
 |                    |              |                                                                         |
 |                    |              |                                                                         |
 |                    |              | **7000 to 7014 are Client Side Tests**                                      |
