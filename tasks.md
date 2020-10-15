@@ -2,6 +2,7 @@
 
 | Target Requirement | Test Case ID | Purpose                                                                 |
 |--------------------|--------------|-------------------------------------------------------------------------|
+<<<<<<< Updated upstream
 | Login Page           	| R1.9         	| To ensure that upon logging in, any formatting errors in  the login forms are appropriately handled and the user is accordingly  prompted to fix those errors.                                                                  	|
 | Login Page           	| R1.10        	| To ensure that a user is correctly re-directed to their profile when correct  credentials have been entered on the login page.                                                                                                  	|
 | Login Page           	| R1.11        	| To ensure that upon logging in, if the credentials entered are incorrect, the error is appropriately handled and the user is accordingly prompted to fix the error.                                                             	|
@@ -11,3 +12,14 @@
 | User Profile Page    	| R3.8         	| To ensure that the ticket-selling form can correctly be posted to the backend (at route /sell), since details regarding the tickets are to be stored, set, and fetched from the backend.                                        	|
 | User Profile Page    	| R3.9         	| To ensure that the ticket-buying form can correctly be posted to the backend (at route /buy), since details regarding the tickets are to be stored, set, and fetched from the backend.                                          	|
 | User Profile Page    	| R3.11        	| To ensure that the ticket-update form can correctly be posted to the backend (at route /update), since details regarding the tickets are to be stored, set, and fetched from the backend.                                                                                    |
+=======
+| R1         | 7000        	| To ensure that upon logging in, any formatting errors in  the login forms are appropriately handled and the user is accordingly  prompted to fix those errors.                                                                  	|
+| R1         | 7001       	| To ensure that a user is correctly re-directed to their profile when correct  credentials have been entered on the login page.                                                                                                  	|
+| R1         | 7002         | To ensure that upon logging in, if the credentials entered are incorrect, the error is appropriately handled and the user is accordingly prompted to fix the error.                                                             	|
+| R2         | 7003         | To ensure that upon an attempt to register, any formatting errors in the register forms are appropriately handled and the user is accordingly prompted to fix those errors.                                                     	|
+| R2         | 7004         | To ensure that upon registering, no user is allowed to sign up with an email address  which already has a user registered against in the database, and that the user is accordingly  prompted to use a different email address. 	|
+| R2         | 7005         | To ensure that upon successful registration, the user's starting balance is set to 5000, which can be viewed from their user profile, for which they're accordingly redirected to the login page.                               	|
+| R3         | 7006         | To ensure that the ticket-selling form can correctly be posted to the backend (at route /sell), since details regarding the tickets are to be stored, set, and fetched from the backend.                                        	|
+| R3         | 7007         | To ensure that the ticket-buying form can correctly be posted to the backend (at route /buy), since details regarding the tickets are to be stored, set, and fetched from the backend.                                          	|
+| R3         | 7008         | To ensure that the ticket-update form can correctly be posted to the backend (at route /update), since details regarding the tickets are to be stored, set, and fetched from the backend.                                         |
+>>>>>>> Stashed changes
