@@ -16,7 +16,7 @@
 
 # Your understanding of how the chosen testing framework works to test the frontend, including your understandings of when and how the test cases will be running directly on GitHub.
 
-Whenever a pull request is made to master, a github workflow is dispatched where it specifies how to run the internal automated testing. It only allows the merge to be completed if all tests are passed, and no regression is created.
+Whenever a pull request is made to master, a github workflow is dispatched where it specifies how to run the internal automated testing. During the PR, it will say whether or not if all tests are passed, and no regression is created.
 
 The test framework Selenium is a headless browser that executes Javascript actions into the browser and asserts expected elements.
 
