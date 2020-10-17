@@ -1,3 +1,16 @@
+# Test plan
+
+### How did your team organize the documentations of the test cases?
+ 
+ 
+### Your understanding of how Selenium works to test the frontend, including your understanding of when and how the test cases will be running directly on GitHub.
+
+
+
+### How are you going to organize different test case code files?
+
+
+
 # Test Cases
 
 | Target Requirement | Test Case ID | Purpose                                                                 |
