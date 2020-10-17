@@ -3,6 +3,10 @@
 ### How did your team organize the documentations of the test cases?
  
 
+The documentaion is split by requirement groups, as in R1, R2, R3. This makes it easy for us and the TA to identity the requirements that are met. While each test case in this table isn't necessarily equivalent to each required spec (although it can be), this format allows us to group together the test cases that meet each group of requirements. Each test case has a test case ID that is uniquely for that test, regardless of requirement group or purpose. These test cases are identified by integers from 2000 upwards. The number choice is random. Since each of us (there are 4 of us in this group), we each took a range of numbers (ie. 2000-4000) for the test cases we said we would write. The table also includes a column that contains a short description of what each test ensures, which describes the purpose of the code and what spec we'd be covering.
+ 
+
+
 ### Your understanding of how the chosen testing framework works to test the frontend, including your understandings of when and how the test cases will be running directly on GitHub.
 
 Whenever a pull request is made to master, a github workflow is dispatched where it specifies how to run the internal automated testing. It only allows the merge to be completed if all tests are passed, and no regression is created.
