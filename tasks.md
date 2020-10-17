@@ -2,10 +2,18 @@
 
 ### How did your team organize the documentations of the test cases?
  
+
 The documentaion is split by requirement groups, as in R1, R2, R3. This makes it easy for us and the TA to identity the requirements that are met. While each test case in this table isn't necessarily equivalent to each required spec (although it can be), this format allows us to group together the test cases that meet each group of requirements. Each test case has a test case ID that is uniquely for that test, regardless of requirement group or purpose. These test cases are identified by integers from 2000 upwards. The number choice is random. Since each of us (there are 4 of us in this group), we each took a range of numbers (ie. 2000-4000) for the test cases we said we would write. The table also includes a column that contains a short description of what each test ensures, which describes the purpose of the code and what spec we'd be covering.
  
-### Your understanding of how Selenium works to test the frontend, including your understanding of when and how the test cases will be running directly on GitHub.
 
+
+### Your understanding of how the chosen testing framework works to test the frontend, including your understandings of when and how the test cases will be running directly on GitHub.
+
+Whenever a pull request is made to master, a github workflow is dispatched where it specifies how to run the internal automated testing. It only allows the merge to be completed if all tests are passed, and no regression is created.
+
+The test framework Selenium is a headless browser that executes Javascript actions into the browser and asserts expected elements.
+
+The test framework pytest will execute tests on backend functions, and perform tests on the endpoints, giving values and asserting outcomes.
 
 
 ### How are you going to organize different test case code files?
@@ -27,35 +35,12 @@ The documentaion is split by requirement groups, as in R1, R2, R3. This makes it
 | R1         | 5000        	| To ensure that upon logging in, any formatting errors in  the login forms are appropriately handled and the user is accordingly  prompted to fix those errors.                                                                  	|
 | R1         | 5001       	| To ensure that a user is correctly re-directed to their profile when correct  credentials have been entered on the login page.                                                                                                  	|
 | R1         | 5002         | To ensure that upon logging in, if the credentials entered are incorrect, the error is appropriately handled and the user is accordingly prompted to fix the error. |
-|                    |              |                                                                         |
-|                    |              |                                                                         |
-|                    |              | **7000 to 7014 are Client Side Tests**                                      |
-| R2                 |    7000      | Check if cookie or token exists representing login, make sure redirected|
-| R2                 |    7001      | If there is no cookie or token rep auth, make sure on register page     | 
-| R2                 |    7002      | fields "email", "username", "password", "password2" exist on register   |
-| R2                 |    7003      | register form can be successfully POSTed to current at register         |
-| R2                 |    7004      | Make sure you cannot register with email or password fields empty       | (TBD)
-| R2                 |    7005      | Make sure when registering password 1 and password 2 matches            | (TBD)
-| R2                 |    7006      | Make sure password can only be be registered with minimum length of 6   | (TBD)
-| R2                 |    7007      | Make sure password can only be registered with a  uppercase char        | (TBD)
-| R2                 |    7008      | Make sure password can only be registered with a lowercase char         | (TBD)
-| R2                 |    7009      | Make sure username cannot be registered with a space as first character | (TBD)
-| R2                 |    7010      | Make sure username cannot be registered with a space as last  character | (TBD)
-| R2                 |    7011      | Make sure username cannot be registered with a non alphanum character   | (TBD)
-| R2                 |    7012      | For format errors, make sure it redirects to login and correct msg shown|
-| R2                 |    7013      | If email exists, make sure appropriate message is shown                 |
-| R2                 |    7014      | Make sure login sequence is successful (new acc & redirect)             |
-| R2                 |    7015      | |
-| R2                 |    7016      | |
-| R2                 |    7017      | |
-| R2                 |    7018      | |
-| R2                 |    7019      | |
-| R2                 |    7020      | |
-| R2                 |    7021      | |
-| R2                 |    7022      | |
-| R2                 |    7023      | |
-| R2                 |    7024      | |
-| R2                 |    7025      | |
+| R2                 |    7000      | Check if cookie or token exists representing login, make sure redirected (F)|
+| R2                 |    7001      | If there is no cookie or token rep auth, make sure on register page     (F)| 
+| R2                 |    7002      | fields exist and register form can be successfully POSTed to current at register         (F)|
+| R2                 |    7003      | Make sure you cannot register with email or password fields empty       (F)|
+| R2                 |    7004      | Make sure when registering password 1 and password 2 matches            (F)|
+| R2                 |    7005      | Make sure an error message is returned when failing to meet a validation constraint   (F)|
 | R2         | 5003         | To ensure that upon an attempt to register, any formatting errors in the register forms are appropriately handled and the user is accordingly prompted to fix those errors.                                                     	|
 | R2         | 5004         | To ensure that upon registering, no user is allowed to sign up with an email address  which already has a user registered against in the database, and that the user is accordingly  prompted to use a different email address. 	|
 | R2         | 5005         | To ensure that upon successful registration, the user's starting balance is set to 5000, which can be viewed from their user profile, for which they're accordingly redirected to the login page.                               	|
@@ -70,3 +55,5 @@ The documentaion is split by requirement groups, as in R1, R2, R3. This makes it
 | R3         | 5007         | To ensure that the ticket-buying form can correctly be posted to the backend (at route /buy), since details regarding the tickets are to be stored, set, and fetched from the backend.                                          	|
 | R3         | 5008         | To ensure that the ticket-update form can correctly be posted to the backend (at route /update), since details regarding the tickets are to be stored, set, and fetched from the backend.                  						|
  (TBD)
+
+
