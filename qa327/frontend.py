@@ -28,7 +28,7 @@ def register_post():
     if password != password2:
         error_message = "The passwords do not match"
 
-    elif (len(email) < 1 or not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email):):
+    elif (len(email) < 1 or not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email)):
         error_message = "Email format error"
 
     elif len(password) < 1:
