@@ -1,6 +1,7 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
 import qa327.backend as bn
+import re
 
 """
 This file defines the front-end part of the service.
@@ -57,7 +58,10 @@ def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
     user = bn.login_user(email, password)
-    if user:
+
+    if (len(email) < 1 or not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email)):
+        return render_template('login.html', message='Email format error')
+    elif user:
         session['logged_in'] = user.email
         """
         Session is an object that contains sharing information 
