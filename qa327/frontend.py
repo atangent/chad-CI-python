@@ -1,6 +1,7 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
 import qa327.backend as bn
+import re
 
 """
 This file defines the front-end part of the service.
@@ -8,6 +9,8 @@ It elaborates how the services should handle different
 http requests from the client (browser) through templating.
 The html templates are stored in the 'templates' folder. 
 """
+
+EMAIL_REGEX = re.compile(r"/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/")
 
 
 @app.route('/register', methods=['GET'])
@@ -38,11 +41,13 @@ def register_post():
     if password != password2:
         error_message = "The passwords do not match"
 
-    elif len(email) < 1:
-        error_message = "Email format error"
+    elif len(email) < 1 or not EMAIL_REGEX.match(email):
+        error_message = "Email format is incorrect"
 
-    elif len(password) < 1:
-        error_message = "Password not strong enough"
+    elif len(password) < 6 or not (any(x.isupper() for x in password)) or not (any(x.islower() for x in password)) or not (any(not x.isalnum() for x in password)):
+        error_message = "Password format is incorrect / not strong enough"
+    elif len(name) < 1 or (any(not x.isalnum() for x in name)) or name[0] == ' ' or name[-1] == ' ':
+        error_message = "Name format is incorrect"
     else:
         user = bn.get_user(email)
         if user:
