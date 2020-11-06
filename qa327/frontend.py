@@ -12,6 +12,16 @@ The html templates are stored in the 'templates' folder.
 
 @app.route('/register', methods=['GET'])
 def register_get():
+    # check if the user is logged in
+    if 'logged_in' in session:
+        email = session['logged_in']
+        user = bn.get_user(email)
+        if user:
+            # if the user exists, redirect
+            return redirect('/')
+        else:
+            return redirect('/logout')
+    
     # templates are stored in the templates folder
     return render_template('register.html', message='')
 
