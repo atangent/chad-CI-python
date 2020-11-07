@@ -131,3 +131,7 @@ def profile(user):
     # front-end portals
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html')
