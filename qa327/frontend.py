@@ -1,6 +1,7 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
 import qa327.backend as bn
+import re
 
 """
 This file defines the front-end part of the service.
@@ -52,10 +53,68 @@ def login_get():
     return render_template('login.html', message='Please login')
 
 
+def check_empty_fields(field):
+    """
+    Raises error message and renders
+    login html page if field is empty
+    :param field: the field in question
+    """
+    if not field:
+        return render_template('login.html',
+        message='Field is required')
+
+
+def check_valid_email(email):
+    """
+    Validates if email follows RFC 5322
+    :param email: the email in question
+    """
+    if not re.match('[^@]+@[^@]+\.[^@]+', email):
+        return render_template('login.html',
+        message='Email/password format is incorrect')
+
+
+def check_valid_password(password):
+    """
+    Validates password complexity 
+    - min length 6
+    - min one upper case
+    - min one lower case
+    - min one special char
+    :param password: the password in question
+    """
+    upper = lower = special = False
+
+    for char in password:
+        if char.isupper() and not upper:
+            upper = True
+        elif char.islower() and not lower:
+            lower = True
+        elif not char.isalnum() and not special:
+            special = True
+        else:
+            continue
+
+    if len(password) < 6 or not upper or \
+            not lower or not special:
+        return render_template('login.html',
+        message='Email/password format is incorrect')
+
+
 @app.route('/login', methods=['POST'])
 def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
+    
+    # Re render login page with error message 
+    # if email or pwd fields are empty, 
+    # or if email or pwd do not meet 
+    # format requirements
+    check_empty_fields(field=email)
+    check_empty_fields(field=password)
+    check_valid_email(email=email)
+    check_valid_password(password=password)
+
     user = bn.login_user(email, password)
     if user:
         session['logged_in'] = user.email
@@ -73,7 +132,7 @@ def login_post():
         # code 303 is to force a 'GET' request
         return redirect('/', code=303)
     else:
-        return render_template('login.html', message='login failed')
+        return render_template('login.html', message='email/password combination incorrect')
 
 
 @app.route('/logout')
