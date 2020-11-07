@@ -1,3 +1,5 @@
+# All tests for R2 - register go here
+
 import pytest
 from seleniumbase import BaseCase
 
