@@ -69,7 +69,7 @@ def check_valid_email(email):
     Validates if email follows RFC 5322
     :param email: the email in question
     """
-    if not re.match('[^@]+@[^@]+\.[^@]+', email):
+    if not re.match("[^@]+@[^@]+\.[^@]+", email):
         return render_template('login.html',
         message='Email/password format is incorrect')
 
