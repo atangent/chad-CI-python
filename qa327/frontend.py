@@ -109,6 +109,8 @@ def authenticate(inner_function):
                 # if the user exists, call the inner_function
                 # with user as parameter
                 return inner_function(user)
+            else:
+                return redirect('/login')
         else:
             # else, redirect to the login page
             return redirect('/login')
