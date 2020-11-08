@@ -76,11 +76,11 @@ def check_valid_password(password):
     upper = lower = special = False
 
     for char in password:
-        if char.isupper() and not upper:
+        if not upper and char.isalnum() and char.isupper():
             upper = True
-        elif char.islower() and not lower:
+        elif not lower and char.isalnum() and char.islower():
             lower = True
-        elif not char.isalnum() and not special:
+        elif not special and not char.isalnum():
             special = True
         else:
             continue
