@@ -46,7 +46,7 @@ def register_post():
 
     elif len(password) < 6 or not (any(x.isupper() for x in password)) or not (any(x.islower() for x in password)) or not (any(not x.isalnum() for x in password)):
         error_message = "Password format is incorrect / not strong enough"
-    elif len(name) < 1 or (any(not x.isalnum() for x in name)) or name[0] == ' ' or name[-1] == ' ':
+    elif len(name) < 2 or len(name) >= 20 or (any(not x.isalnum() for x in name)) or name[0] == ' ' or name[-1] == ' ':
         error_message = "Name format is incorrect"
     else:
         user = bn.get_user(email)
