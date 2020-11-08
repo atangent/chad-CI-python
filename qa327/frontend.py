@@ -64,16 +64,6 @@ def check_empty_fields(field):
         message='Field is required')
 
 
-def check_valid_email(email):
-    """
-    Validates if email follows RFC 5322
-    :param email: the email in question
-    """
-    if not re.match("[^@]+@[^@]+\.[^@]+", email):
-        return render_template('login.html',
-        message='Email/password format is incorrect')
-
-
 def check_valid_password(password):
     """
     Validates password complexity 
@@ -107,12 +97,8 @@ def login_post():
     password = request.form.get('password')
     
     # Re render login page with error message 
-    # if email or pwd fields are empty, 
-    # or if email or pwd do not meet 
-    # format requirements
-    check_empty_fields(field=email)
+    # if pwd field is empty or wrong format
     check_empty_fields(field=password)
-    check_valid_email(email=email)
     check_valid_password(password=password)
 
     user = bn.login_user(email, password)
@@ -132,7 +118,7 @@ def login_post():
         # code 303 is to force a 'GET' request
         return redirect('/', code=303)
     else:
-        return render_template('login.html', message='email/password combination incorrect')
+        return render_template('login.html', message='login failed')
 
 
 @app.route('/logout')
