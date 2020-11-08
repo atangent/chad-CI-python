@@ -18,6 +18,7 @@ The test framework pytest will execute tests on backend functions, and perform t
 
 ### How are you going to organize different test case code files?
 
+All of our test cases will go into the qa327_test folder, then into the applicable subfolder (one of frontend, backend, or integration). We will then organize the tests into files for each requirement (R1-R8). This system will make sure tests stay organized and manageable.
 
 
 # Test Cases
