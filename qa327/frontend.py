@@ -10,7 +10,7 @@ http requests from the client (browser) through templating.
 The html templates are stored in the 'templates' folder. 
 """
 
-EMAIL_REGEX = re.compile(r"/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/")
+EMAIL_REGEX = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
 
 
 @app.route('/register', methods=['GET'])
