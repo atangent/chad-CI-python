@@ -10,21 +10,9 @@ http requests from the client (browser) through templating.
 The html templates are stored in the 'templates' folder. 
 """
 
-EMAIL_REGEX = re.compile(r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
-
 
 @app.route('/register', methods=['GET'])
 def register_get():
-    # check if the user is logged in
-    if 'logged_in' in session:
-        email = session['logged_in']
-        user = bn.get_user(email)
-        if user:
-            # if the user exists, redirect
-            return redirect('/')
-        else:
-            return redirect('/logout')
-    
     # templates are stored in the templates folder
     return render_template('register.html', message='')
 
@@ -36,19 +24,16 @@ def register_post():
     password = request.form.get('password')
     password2 = request.form.get('password2')
     error_message = None
-    lenname = len(name)
 
 
     if password != password2:
         error_message = "The passwords do not match"
 
-    elif len(email) < 1 or not EMAIL_REGEX.match(email):
-        error_message = "Email format is incorrect"
+    elif not is_valid_email(email):
+        error_message = "Email format error"
 
-    elif len(password) < 6 or not (any(x.isupper() for x in password)) or not (any(x.islower() for x in password)) or not (any(not x.isalnum() for x in password)):
-        error_message = "Password format is incorrect / not strong enough"
-    elif lenname < 2 or lenname >= 20 or (any(not x.isalnum() for x in name)) or name[0] == ' ' or name[-1] == ' ':
-        error_message = "Name format is incorrect"
+    elif not is_valid_password(password):
+        error_message = "Password not strong enough"
     else:
         user = bn.get_user(email)
         if user:
@@ -89,7 +74,7 @@ def is_valid_email(email):
     return False if INVALID_EMAIL else True
 
 
-def check_valid_password(password):
+def is_valid_password(password):
     """
     Validates password complexity 
     - min length 6
@@ -112,8 +97,8 @@ def check_valid_password(password):
 
     if len(password) < 6 or not upper or \
             not lower or not special:
-        return render_template('login.html',
-        message='Email/password format is incorrect')
+        return False
+    return True
 
 
 @app.route('/login', methods=['POST'])
@@ -124,10 +109,14 @@ def login_post():
     # Re render login page with error message 
     # if pwd field is empty or wrong format
     check_empty_fields(field=password)
-    check_valid_password(password=password)
 
     user = bn.login_user(email, password)
-    if user:
+
+    if not is_valid_email(email):
+        return render_template('login.html', message='Email format error')
+    elif not is_valid_password(password):
+        return render_template('login.html', message='Invalid password')
+    elif user:
         session['logged_in'] = user.email
         """
         Session is an object that contains sharing information 
@@ -196,3 +185,7 @@ def profile(user):
     # front-end portals
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html')

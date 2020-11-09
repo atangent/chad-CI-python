@@ -1,3 +1,5 @@
+# All tests for R2 - register go here
+
 import pytest
 from seleniumbase import BaseCase
 
@@ -25,7 +27,7 @@ Annotate @patch before unit tests can mock backend methods (for that testing fun
 test_user = User(
     email='test_frontend@test.com',
     name='test_frontend',
-    password=generate_password_hash('test_Frontend!')
+    password=generate_password_hash('test_Frontend0!')
 )
 
 # Moch some sample tickets
@@ -47,7 +49,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/login')
         # fill email and password
         self.type("#email", "test_frontend@test.com")
-        self.type("#password", "test_Frontend!")
+        self.type("#password", "test_Frontend0!")
         # click enter button
         self.click('input[type="submit"]')
         
@@ -77,7 +79,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/login')
         # fill wrong email and password
         self.type("#email", "test_frontend@test.com")
-        self.type("#password", "wrong_password")
+        self.type("#password", "wrong_passworD!0")
         # click enter button
         self.click('input[type="submit"]')
         # make sure it shows proper error message
