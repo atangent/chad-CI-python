@@ -29,10 +29,10 @@ def register_post():
     if password != password2:
         error_message = "The passwords do not match"
 
-    elif (len(email) < 1 or not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email)):
+    elif not is_valid_email(email):
         error_message = "Email format error"
 
-    elif len(password) < 1:
+    elif not check_valid_password(password):
         error_message = "Password not strong enough"
     else:
         user = bn.get_user(email)
@@ -113,7 +113,7 @@ def login_post():
 
     user = bn.login_user(email, password)
 
-    if (len(email) < 1 or not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email)):
+    if not is_valid_email(email):
         return render_template('login.html', message='Email format error')
     elif user:
         session['logged_in'] = user.email
@@ -188,3 +188,4 @@ def profile(user):
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html')
+    
