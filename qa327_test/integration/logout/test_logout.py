@@ -1,0 +1,1 @@
+# All tests for R7 - /logout go here

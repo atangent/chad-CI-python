@@ -63,4 +63,3 @@ Checks the current session for a logged in user and logs them out. Returns a red
 
 *page_not_found*
 Returns the 404 page.
-
