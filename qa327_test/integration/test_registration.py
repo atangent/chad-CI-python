@@ -13,7 +13,7 @@ class Registered(BaseCase):
     def register(self):
         """register new user"""
         self.open(base_url + '/register')
-        self.type("#email", "test0")
+        self.type("#email", "test_integration@test.com")
         self.type("#name", "test0")
         self.type("#password", "test0")
         self.type("#password2", "test0")
@@ -22,7 +22,7 @@ class Registered(BaseCase):
     def login(self):
         """ Login to Swag Labs and verify that login was successful. """
         self.open(base_url + '/login')
-        self.type("#email", "test0")
+        self.type("#email", "test_integration@test.com")
         self.type("#password", "test0")
         self.click('input[type="submit"]')
 
