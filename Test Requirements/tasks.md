@@ -41,7 +41,15 @@ All of our test cases will go into the qa327_test folder, then into the applicab
 | R2                 |    7002      | fields exist and register form can be successfully POSTed to current at register         (F)|
 | R2                 |    7003      | Make sure you cannot register with email or password fields empty       (F)|
 | R2                 |    7004      | Make sure when registering password 1 and password 2 matches            (F)|
-| R2                 |    7005      | Make sure an error message is returned when failing to meet a validation constraint   (F)|
+| R2                 |    7005      | Email field must match the regex that defines valid emails when registering an account (B) |
+| R2                 |    7006      | Password must have minimum length of 6 when registering an account (B) |
+| R2                 |    7007      | Password must have one uppercase when registering an account (B) |
+| R2                 |    7008      | Password must have one lowercase when registering an account (B) |
+| R2                 |    7009      | Password must have one special character when registering an account (B) |
+| R2                 |    7010      | Username must be non-empty when registering an account (B) |
+| R2                 |    7013      | Username must be alphanumeric when registering an account (B) |
+| R2                 |    7011      | Cannot have a space at the start of username when registering an account (B) |
+| R2                 |    7012      | Cannot have a space at the end of username  when registering an account (B) |
 | R2         | 5003         | To ensure that upon an attempt to register, any formatting errors in the register forms are appropriately handled and the user is accordingly prompted to fix those errors.                                                     	|
 | R2         | 5004         | To ensure that upon registering, no user is allowed to sign up with an email address  which already has a user registered against in the database, and that the user is accordingly  prompted to use a different email address. 	|
 | R2         | 5005         | To ensure that upon successful registration, the user's starting balance is set to 5000, which can be viewed from their user profile, for which they're accordingly redirected to the login page.                               	|
