@@ -53,10 +53,64 @@ def login_get():
     return render_template('login.html', message='Please login')
 
 
+def check_empty_fields(field):
+    """
+    Raises error message and renders
+    login html page if field is empty
+    :param field: the field in question
+    """
+    if not field:
+        return render_template('login.html',
+        message='Field is required')
+
+
+def is_valid_email(email):
+    """
+    Returns boolean for valid email
+    :param email: the email in question
+    """
+    INVALID_EMAIL = (len(email) < 1 or \
+        not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email))
+    return False if INVALID_EMAIL else True
+
+
+def check_valid_password(password):
+    """
+    Validates password complexity 
+    - min length 6
+    - min one upper case
+    - min one lower case
+    - min one special char
+    :param password: the password in question
+    """
+    upper = lower = special = False
+
+    for char in password:
+        if not upper and char.isalnum() and char.isupper():
+            upper = True
+        elif not lower and char.isalnum() and char.islower():
+            lower = True
+        elif not special and not char.isalnum():
+            special = True
+        else:
+            continue
+
+    if len(password) < 6 or not upper or \
+            not lower or not special:
+        return render_template('login.html',
+        message='Email/password format is incorrect')
+
+
 @app.route('/login', methods=['POST'])
 def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
+    
+    # Re render login page with error message 
+    # if pwd field is empty or wrong format
+    check_empty_fields(field=password)
+    check_valid_password(password=password)
+
     user = bn.login_user(email, password)
 
     if (len(email) < 1 or not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email)):
@@ -113,9 +167,8 @@ def authenticate(inner_function):
                 # if the user exists, call the inner_function
                 # with user as parameter
                 return inner_function(user)
-        else:
-            # else, redirect to the login page
-            return redirect('/login')
+                
+        return redirect('/login')
 
     # return the wrapped version of the inner_function:
     return wrapped_inner

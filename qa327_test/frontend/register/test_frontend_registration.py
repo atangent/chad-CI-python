@@ -27,7 +27,7 @@ Annotate @patch before unit tests can mock backend methods (for that testing fun
 test_user = User(
     email='test_frontend@test.com',
     name='test_frontend',
-    password=generate_password_hash('test_frontend')
+    password=generate_password_hash('test_Frontend!')
 )
 
 # Moch some sample tickets
@@ -49,7 +49,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/login')
         # fill email and password
         self.type("#email", "test_frontend@test.com")
-        self.type("#password", "test_frontend")
+        self.type("#password", "test_Frontend!")
         # click enter button
         self.click('input[type="submit"]')
         
