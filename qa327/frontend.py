@@ -64,6 +64,16 @@ def check_empty_fields(field):
         message='Field is required')
 
 
+def is_valid_email(email):
+    """
+    Returns boolean for valid email
+    :param email: the email in question
+    """
+    INVALID_EMAIL = (len(email) < 1 or \
+        not re.match(r"^[A-Za-z0-9\.\+_-]+@[A-Za-z0-9\._-]+\.[a-zA-Z]*$", email))
+    return False if INVALID_EMAIL else True
+
+
 def check_valid_password(password):
     """
     Validates password complexity 
