@@ -1,6 +1,7 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
 import qa327.backend as bn
+import re
 
 """
 This file defines the front-end part of the service.
@@ -52,10 +53,54 @@ def login_get():
     return render_template('login.html', message='Please login')
 
 
+def check_empty_fields(field):
+    """
+    Raises error message and renders
+    login html page if field is empty
+    :param field: the field in question
+    """
+    if not field:
+        return render_template('login.html',
+        message='Field is required')
+
+
+def check_valid_password(password):
+    """
+    Validates password complexity 
+    - min length 6
+    - min one upper case
+    - min one lower case
+    - min one special char
+    :param password: the password in question
+    """
+    upper = lower = special = False
+
+    for char in password:
+        if not upper and char.isalnum() and char.isupper():
+            upper = True
+        elif not lower and char.isalnum() and char.islower():
+            lower = True
+        elif not special and not char.isalnum():
+            special = True
+        else:
+            continue
+
+    if len(password) < 6 or not upper or \
+            not lower or not special:
+        return render_template('login.html',
+        message='Email/password format is incorrect')
+
+
 @app.route('/login', methods=['POST'])
 def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
+    
+    # Re render login page with error message 
+    # if pwd field is empty or wrong format
+    check_empty_fields(field=password)
+    check_valid_password(password=password)
+
     user = bn.login_user(email, password)
     if user:
         session['logged_in'] = user.email
