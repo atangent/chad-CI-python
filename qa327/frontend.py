@@ -29,10 +29,10 @@ def register_post():
     if password != password2:
         error_message = "The passwords do not match"
 
-    elif len(email) < 1:
+    elif not is_valid_email(email):
         error_message = "Email format error"
 
-    elif len(password) < 1:
+    elif not is_valid_password(password):
         error_message = "Password not strong enough"
     else:
         user = bn.get_user(email)
@@ -74,7 +74,7 @@ def is_valid_email(email):
     return False if INVALID_EMAIL else True
 
 
-def check_valid_password(password):
+def is_valid_password(password):
     """
     Validates password complexity 
     - min length 6
@@ -97,8 +97,8 @@ def check_valid_password(password):
 
     if len(password) < 6 or not upper or \
             not lower or not special:
-        return render_template('login.html',
-        message='Email/password format is incorrect')
+        return False
+    return True
 
 
 @app.route('/login', methods=['POST'])
@@ -109,10 +109,14 @@ def login_post():
     # Re render login page with error message 
     # if pwd field is empty or wrong format
     check_empty_fields(field=password)
-    check_valid_password(password=password)
 
     user = bn.login_user(email, password)
-    if user:
+
+    if not is_valid_email(email):
+        return render_template('login.html', message='Email format error')
+    elif not is_valid_password(password):
+        return render_template('login.html', message='Invalid password')
+    elif user:
         session['logged_in'] = user.email
         """
         Session is an object that contains sharing information 
@@ -181,3 +185,7 @@ def profile(user):
     # front-end portals
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html')
