@@ -85,4 +85,4 @@ All of our test cases will go into the qa327_test folder, then into the applicab
 | R6 | 6022 | Check that the quantity of the ticket is between 1 and 100 (inclusive) |
 | R6 | 6023 | Check that ticket exists in database
 | R6 | 6024 | Check that the quantity requested to buy is less than the current ticket quantity |
-| R6 | 6025 | Check that current balance is greater than or equal to the ticket price * quantity + 40% fees 
+| R6 | 6025 | Check that current balance is greater than or equal to the ticket price * quantity + 35% service fee + 5% tax 
