@@ -116,3 +116,157 @@ Actions:
 - click element `input[type="submit"]`
 - compare input text in `#password` to requirements
 - ensure error message shows that pwd must meet complexity req
+
+### Test case 6001 - R5.1 - Check that the name of the ticket contains alphanumeric characters only, and that spaces are only at the beginning or end of the name.
+Mocking:
+- mock backend.get_user to return a test_user instance
+- mock backend.create_ticket to return True
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element #email
+- enter test_user's password into element #password
+- click element input[type="submit"]
+- open /
+- enter " test_ticket_name " into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is added, and that the user is redirected to /
+- enter "te^%&^**%st_ticket_name" into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is not added, and that the user is redirected to / with the correct message
+
+### Test case 6001 - R5.2 - Check that the length of the ticket name between 6 and 60 characters (inclusive).
+Mocking:
+- mock backend.get_user to return a test_user instance
+- mock backend.create_ticket to return True
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element #email
+- enter test_user's password into element #password
+- click element input[type="submit"]
+- open /
+- enter " test_ticket_name " into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is added, and that the user is redirected to /
+- enter " name " into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is not added, and that the user is redirected to / with the correct message
+
+### Test case 6001 - R5.3 - Check that the quantity of the ticket is between 1 and 100 (inclusive)
+Mocking:
+- mock backend.get_user to return a test_user instance
+- mock backend.create_ticket to return True
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element #email
+- enter test_user's password into element #password
+- click element input[type="submit"]
+- open /
+- enter " test_ticket_name " into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is added, and that the user is redirected to /
+- enter "test_ticket_name" into #name
+- enter 1000 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is not added, and that the user is redirected to / with the correct message
+
+### Test case 6001 - R5.4 - Check that the price is between 10 and 100 (inclusive)
+Mocking:
+- mock backend.get_user to return a test_user instance
+- mock backend.create_ticket to return True
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element #email
+- enter test_user's password into element #password
+- click element input[type="submit"]
+- open /
+- enter " test_ticket_name " into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is added, and that the user is redirected to /
+- enter "test_ticket_name" into #name
+- enter 5 into #quantity
+- enter 101 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is not added, and that the user is redirected to / with the correct message
+
+### Test case 6001 - R5.5 - Check that the date is given in the format YYYMMDD 
+Mocking:
+- mock backend.get_user to return a test_user instance
+- mock backend.create_ticket to return True
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element #email
+- enter test_user's password into element #password
+- click element input[type="submit"]
+- open /
+- enter " test_ticket_name " into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is added, and that the user is redirected to /
+- enter "test_ticket_name" into #name
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) in YYYYDDMM format to #date
+- click element input[type="submit"]
+- check that the ticket is not added, and that the user is redirected to / with the correct message
+
+### Test case 6001 - R5.6 - Check that the ticket id exists
+Assumptions:
+- ticket1 = ticket id that exists in the database
+- ticket2 = ticket id that doesn't exist in the database
+
+Mocking:
+- mock backend.get_user to return a test_user instance
+- mock backend.create_ticket to return True
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element #email
+- enter test_user's password into element #password
+- click element input[type="submit"]
+- open /
+- enter " test_ticket_name " into #name for ticket1
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is added, and that the user is redirected to /
+- enter " test_ticket_name " into #name for ticket2
+- enter 5 into #quantity
+- enter 15 into #price
+- enter (today's date + 1 day) to #date
+- click element input[type="submit"]
+- check that the ticket is not added, and that the user is redirected to / with the correct message
