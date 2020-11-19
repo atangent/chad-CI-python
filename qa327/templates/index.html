@@ -6,7 +6,7 @@
 
 {% block content %}
 <h2 id="welcome-header">Welcome {{ user.name }} !</h2>
-
+<h4 id='message'>{{message}}</h4>
 <a href='/logout'>logout</a>
 
 <h3 id="balance">Your balance is ${{ user.balance }}</h3>
@@ -37,8 +37,9 @@
     <input type="submit"/>
 </form>
 <br/>
-<h2>Edit ticket</h2>
+<h2>Update ticket</h2>
 <form id="add-ticket" action="/update" method="POST">
+    <input type="hidden" name="id"/>
     Name: <input type="text" name="name"/><br/>
     Quantity: <input type="number" name="quantity"/><br/>
     Price: <input type="number" name="price"/><br/>
