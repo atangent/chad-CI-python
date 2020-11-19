@@ -1,4 +1,4 @@
-# All tests for R7 - logout go here
+# All tests for R8 - 404 go here
 
 import pytest
 from seleniumbase import BaseCase
@@ -35,31 +35,13 @@ test_tickets = [
     {'name': 't1', 'price': '100'}
 ]
 
-
 class FrontEndHomePageTest(BaseCase):
 
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    def test_logout_success(self, *_):
-        """
-        This is a sample front end unit test to login to home page
-        and verify if the tickets are correctly listed.
-        """
+    def test_nonexistent_page(self, *_):
+        """ Login and verify if the tickets are correctly listed."""
         # open login page
-        self.open(base_url + '/login')
-        # fill email and password
-        self.type("#email", "test_frontend@test.com")
-        self.type("#password", "test_Frontend0!")
-        # click enter button
-        self.click('input[type="submit"]')
-        
-        # open home page
-        self.open(base_url)
-        # logout
-        self.click('a[href="/logout"]')
-        #verify redirect to login page
-        self.assertIn("Log In", self.driver.title)
-        # open home page
-        self.open(base_url)
-        # verify redirect to login page
-        self.assertIn("Log In", self.driver.title)
+        self.open(base_url + '/nonexistentPage')
+        # make sure it shows proper error message
+        self.assertIn("Error", self.driver.title)
