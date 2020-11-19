@@ -1,4 +1,4 @@
-from qa327.models import db, User
+from qa327.models import db, User, Ticket
 from werkzeug.security import generate_password_hash, check_password_hash
 
 """
@@ -48,6 +48,25 @@ def register_user(email, name, password, password2):
     db.session.commit()
     return None
 
+def get_ticket(id):
+    ticket = Ticket.query().filter_by(id=id)
+    return ticket
+
+def update_ticket(id, name, quantity, price, date):
+    ticket = get_ticket(id)
+    ticket.name = name
+    ticket.quantity = quantity
+    ticket.price = price
+    ticket.date = date
+    db.session.commit()
+
+
+def buy_ticket(id):
+    pass
+
+def sell_ticket(id):
+    pass
 
 def get_all_tickets():
-    return []
+    tickets = Ticket.query.all()
+    return tickets
