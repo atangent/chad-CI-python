@@ -1,7 +1,10 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
+from qa327 import exceptions
+from flask import url_for
 import qa327.backend as bn
 import re
+import datetime
 
 """
 This file defines the front-end part of the service.
@@ -9,7 +12,9 @@ It elaborates how the services should handle different
 http requests from the client (browser) through templating.
 The html templates are stored in the 'templates' folder. 
 """
-
+#####
+# REGISTER METHODS
+#####
 
 @app.route('/register', methods=['GET'])
 def register_get():
@@ -47,6 +52,9 @@ def register_post():
     else:
         return redirect('/login')
 
+#####
+# LOGIN METHODS
+#####
 
 @app.route('/login', methods=['GET'])
 def login_get():
@@ -184,8 +192,100 @@ def profile(user):
     # the login checking code all the time for other
     # front-end portals
     tickets = bn.get_all_tickets()
-    return render_template('index.html', user=user, tickets=tickets)
+    if ('message' in request.args):
+        message = request.args['message']
+    else:
+        message = ""
+    return render_template('index.html', user=user, tickets=tickets, message=message)
+
 
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html')
+
+#####
+# TICKET METHODS
+#####
+def is_ticket_name_alphanum(ticket_name):
+    return True if all(char.isalnum() for char in ticket_name) else False
+
+
+def is_ticket_name_length_ok(ticket_name):
+    return True if len(ticket_name) > 60 else False
+
+
+def is_quantity_of_tickets_valid(num_tickets):
+    return True if num_tickets > 0 and num_tickets <= 100 else False
+
+
+def does_ticket_exist(ticket_id):
+    return True if bn.get_ticket(id) is not None else False
+
+
+def is_ticket_price_valid(ticket_price):
+    return True if ticket_price >= 0 and ticket_price <= 100 else False
+
+
+def is_ticket_date_valid(ticket_date):
+    try:
+        datetime.datetime.strptime(ticket_date, '%Y%m%d')
+        return True
+    except ValueError:
+        return False
+
+def ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date):
+    # update, buy
+    if not does_ticket_exist(ticket_id):
+        message = "Ticket not found."
+        return redirect(url_for('profile', message=message))
+
+    # sell, update, buy
+    if not is_ticket_name_alphanum(ticket_name):
+        message = "Ticket name can only contain alphnumeric characters."
+        return redirect(url_for('profile', message=message))
+
+    if not is_quantity_of_tickets_valid(ticket_quantity):
+        message = "Ticket quantity must be between 0 and 100"
+        return redirect(url_for('profile', message=message))
+
+    if not is_ticket_price_valid(ticket_price):
+        message = "Ticket pirce is invalid"
+        return redirect(url_for('profile', message=message))
+
+    if not is_ticket_name_length_ok(ticket_name):
+        message = "Ticket name length is more than 60 characters."
+        return redirect(url_for('profile', message=message))
+    
+    if not is_ticket_date_valid(ticket_date):
+        message = "Ticket data is invalid."
+        return redirect(url_for('profile', message=message))
+
+
+@app.route('/update', methods=['POST'])
+def update_ticket():
+    ticket_id = request.form['id']
+    ticket_name = request.form['name']
+    ticket_quantity = request.form['quantity']
+    ticket_price = request.form['price']
+    ticket_date = request.form['date']
+
+    ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
+
+    bn.update_ticket(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
+
+
+@app.route('/buy', methods=['POST'])
+def buy_ticket():
+    
+
+
+@app.route('/sell', methods=['POST'])
+def sell_ticket():
+    ticket_id = request.form['id']
+    ticket_name = request.form['name']
+    ticket_quantity = request.form['quantity']
+    ticket_price = request.form['price']
+    ticket_date = request.form['date']
+
+    ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
+    
