@@ -68,9 +68,7 @@ All of our test cases will go into the qa327_test folder, then into the applicab
 | R4 | 6001 | Check that the name of the ticket contains alphanumeric characters only, and that spaces are only at the beginning or end of the name. |
 | R4 | 6002 | Check that the length of the ticket name between 6 and 60 characters (inclusive). |
 | R4 | 6003 | Check that the quantity of the ticket is between 1 and 100 (inclusive) |
-| Rj | 6004 | Check that the number of tickets is between 0 and 100 |
-| R4 | 6005 | Check that the date is given in the format YYYMMDD |
-| R4 | 6006 | Check that any errors result in a redirect to / and that the correct message is displayed |
+| R4 | 6005 | Check that the date is given in the format YYYYMMDD |
 | R4 | 6007 | Check that new tickets show up in a user's profile page |
 | R4 | 6009 | Check that the current date is not after the ticket date |
 | R4 | 6010 | Check that the price is between 10 and 100 (inclusive) |
@@ -79,14 +77,12 @@ All of our test cases will go into the qa327_test folder, then into the applicab
 | R5 | 6012 | Check that the length of the ticket name between 6 and 60 characters (inclusive). |
 | R5 | 6013 | Check that the quantity of the ticket is between 1 and 100 (inclusive) |
 | R5 | 6014 | Check that the price is between 10 and 100 (inclusive) |
-| R5 | 6015 | Check that the date is given in the format YYYMMDD |
+| R5 | 6015 | Check that the date is given in the format YYYYMMDD |
 | R5 | 6016 | Check that the ticket id exists |
-| R5 | 6017 | Check that any errors result in a redirect to / and that the correct message is shown |
 
-| R5 | 6020 | Check that the name of the ticket contains alphanumeric characters only, and that spaces are only at the beginning or end of the name. |
-| R5 | 6021 | Check that the length of the ticket name between 6 and 60 characters (inclusive). |
-| R5 | 6022 | Check that the quantity of the ticket is between 1 and 100 (inclusive) |
-| R5 | 6023 | Check that ticket exists in database
-| R5 | 6024 | Check that the quantity requested to buy is less than the current ticket quantity |
-| R5 | 6025 | Check that current balance is greater than or equal to the ticket price * quantity + 40% fees 
-| R5 | 6026 | Check that any errors result in a redirect to / and that the correct message is shown |
+| R6 | 6020 | Check that the name of the ticket contains alphanumeric characters only, and that spaces are only at the beginning or end of the name. |
+| R6 | 6021 | Check that the length of the ticket name between 6 and 60 characters (inclusive). |
+| R6 | 6022 | Check that the quantity of the ticket is between 1 and 100 (inclusive) |
+| R6 | 6023 | Check that ticket exists in database
+| R6 | 6024 | Check that the quantity requested to buy is less than the current ticket quantity |
+| R6 | 6025 | Check that current balance is greater than or equal to the ticket price * quantity + 40% fees 
