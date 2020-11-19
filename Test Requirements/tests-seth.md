@@ -484,3 +484,24 @@ Actions:
 - enter 5 into #quantity
 - click element input[type="submit"]
 - check that the ticket is not bought, and that the user us shown the correct error
+
+### Test case 1001 - R7.1 - Check that logging out invalidates the current section and that protected pages can no longer be accessed
+Mocking:
+- mock backend.get_user to return a test_user instance
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element #email
+- enter test_user's password into element #password
+- click element input[type="submit"]
+- open /
+- click element #logout-button
+- check that user is redirected to login page
+- open /
+- check that user is redirected to login page
+
+### Test case 1010 - R8.1 - Check that non-existent URLs redirect to 404 page
+Actions:
+- open /nonexistent_page
+- check that user is redirected to 404 page
