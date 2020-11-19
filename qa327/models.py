@@ -30,14 +30,11 @@ class Ticket(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     holder = db.Column(db.String(100), unique=True)
-    date = db.Column(db.Integer(20300000))
+    date = db.Column(db.Date())
     name = db.Column(db.String(1000))
     price = db.Column(db.Numeric(10,2), default=0)
+    quantity = db.Column(db.Integer(), default=0)
 
-    tickets = []
-    def __init__(self):
-        self.tickets.append(self)
-        
 
 # it creates all the SQL tables if they do not exist
 with app.app_context():
