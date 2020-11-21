@@ -23,14 +23,14 @@ the user from the database.
 Annotate @patch before unit tests can mock backend methods (for that testing function)
 """
 
-# Moch a sample user
+# Mock a sample user
 test_user = User(
     email='test_frontend@test.com',
     name='test_frontend',
     password=generate_password_hash('test_Frontend0!')
 )
 
-# Moch some sample tickets
+# Mock some sample tickets
 test_tickets = [
     {'name': 't1', 'price': '100'}
 ]
@@ -71,17 +71,15 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#tickets div h4")
         self.assert_text("t1 100", "#tickets div h4")
 
-    @patch('qa327.backend.get_user', return_value=test_user)
-    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    def test_login_password_failed(self, *_):
-        """ Login and verify if the tickets are correctly listed."""
-        # open login page
-        self.open(base_url + '/login')
-        # fill wrong email and password
-        self.type("#email", "test_frontend@test.com")
-        self.type("#password", "wrong_passworD!0")
+    #def test_register_success(self, *_):
+        # open register page
+    #    self.open(base_url + '/register')
+
+        #fill in fields
+     #   self.type("#email")
+     #   self.type("#name")
+    #    self.type("#password")
+    #    self.type("#password2")
+
         # click enter button
-        self.click('input[type="submit"]')
-        # make sure it shows proper error message
-        self.assert_element("#message")
-        self.assert_text("login failed", "#message")
+     #   self.click('input[type="submit"]')
