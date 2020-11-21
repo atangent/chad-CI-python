@@ -22,7 +22,6 @@ test_tickets = [
 
 class HomePageTest(BaseCase):
 
-  # R3 
   def test_if_not_logged_in(self):
     """ If user isn't logged in, redirect to login """
     self.open(base_url + '/logout')
