@@ -40,7 +40,7 @@ class HomePageTest(BaseCase):
     self.assert_text("Hi test_frontend", "#welcome-header")
 
   @patch('qa327.backend.get_user', return_value=test_user)
-  def test_shows_user_balance(self):
+  def test_shows_user_balance(self, *_):
     self.open(base_url + '/logout')
     self.open(base_url + '/login')
     self.type("#email", "test_frontend@test.com")
@@ -50,7 +50,7 @@ class HomePageTest(BaseCase):
     self.assert_text(test_user.balance, "#balance")
 
   @patch('qa327.backend.get_user', return_value=test_user)
-  def test_shows_logout_link(self):
+  def test_shows_logout_link(self, *_):
     self.open(base_url + '/logout')
     self.open(base_url + '/login')
     self.type("#email", "test_frontend@test.com")
@@ -61,7 +61,7 @@ class HomePageTest(BaseCase):
 
   @patch('qa327.backend.get_user', return_value=test_user)
   @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-  def test_ticket_table_matches_db(self):
+  def test_ticket_table_matches_db(self, *_):
     self.open(base_url + '/logout')
     self.open(base_url + '/login')
     self.type("#email", "test_frontend@test.com")
@@ -73,7 +73,7 @@ class HomePageTest(BaseCase):
 
   @patch('qa327.backend.get_user', return_value=test_user)
   @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-  def test_sell_form_fields(self):
+  def test_sell_form_fields(self, *_):
     self.open(base_url + '/logout')
     self.open(base_url + '/login')
     self.type("#email", "test_frontend@test.com")
