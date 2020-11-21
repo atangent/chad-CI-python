@@ -29,6 +29,7 @@ class HomePageTest(BaseCase):
     self.assert_element("#message")
     self.assert_text("Please login", "#message")
 
+  @patch('qa327.backend.get_user', return_value=test_user)
   def test_header_hi_username(self):
     self.open(base_url + '/logout')
     self.open(base_url + '/login')
@@ -80,7 +81,9 @@ class HomePageTest(BaseCase):
     self.type("#password", "test_Frontend0!")
     self.click('input[type="submit"]')
     self.open(base_url)
-    for i, field in enumerate(self.get_element("#add-ticket")):
+    parentElement = self.driver.find_element_by_class_name("add-ticket")
+    elementList = parentElement.find_elements_by_tag_name("input")
+    for element in element_list:
       self.assert_element("#name")
       self.assert_element("#quantity")
       self.assert_element("#price")
