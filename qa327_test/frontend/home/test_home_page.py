@@ -88,7 +88,7 @@ class HomePageTest(BaseCase):
 
   @patch('qa327.backend.get_user', return_value=test_user)
   @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-  def test_buy_form_fields(self):
+  def test_buy_form_fields(self, *_):
     self.open(base_url + '/logout')
     self.open(base_url + '/login')
     self.type("#email", "test_frontend@test.com")
