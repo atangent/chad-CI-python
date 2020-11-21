@@ -58,7 +58,6 @@ class HomePageTest(BaseCase):
     self.type("#password", "test_Frontend0!")
     self.click('input[type="submit"]')
     self.open(base_url)
-    ### come back to this
     self.assert_element("#logout")
 
   @patch('qa327.backend.get_user', return_value=test_user)
