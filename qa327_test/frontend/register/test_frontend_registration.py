@@ -38,48 +38,210 @@ test_tickets = [
 
 class FrontEndHomePageTest(BaseCase):
 
-    @patch('qa327.backend.get_user', return_value=test_user)
-    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    def test_login_success(self, *_):
-        """
-        This is a sample front end unit test to login to home page
-        and verify if the tickets are correctly listed.
-        """
-        # open login page
-        self.open(base_url + '/login')
-        # fill email and password
+    @patch('qa327.backend.register_user', return_value=test_user)
+    @patch('qa327.backend.get_user', return_value=None)
+    def test_register_success(self, *_):
+        '''
+        7002 Test if register can be successful
+        '''
+
+         #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
         self.type("#email", "test_frontend@test.com")
+        self.type("#name", "Test Frontend")
         self.type("#password", "test_Frontend0!")
+        self.type("#password2", "test_Frontend0!")
+
+        # click enter button
+        self.click('input[type="submit"]')
+
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Please login", "#message")
+
+    def test_register_passwordmatch(self, *_):
+        '''
+        7004 make sure passwords match
+        '''
+
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "Test Frontend")
+        self.type("#password", "test_Frontend0!")
+        self.type("#password2", "test_Frontendend0!")
+
         # click enter button
         self.click('input[type="submit"]')
         
-        # after clicking on the browser (the line above)
-        # the front-end code is activated 
-        # and tries to call get_user function.
-        # The get_user function is supposed to read data from database
-        # and return the value. However, here we only want to test the
-        # front-end, without running the backend logics. 
-        # so we patch the backend to return a specific user instance, 
-        # rather than running that program. (see @ annotations above)
-        
-        
-        # open home page
-        self.open(base_url)
-        # test if the page loads correctly
-        self.assert_element("#welcome-header")
-        self.assert_text("Welcome test_frontend", "#welcome-header")
-        self.assert_element("#tickets div h4")
-        self.assert_text("t1 100", "#tickets div h4")
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("The passwords do not match", "#message")
 
-    #def test_register_success(self, *_):
-        # open register page
-    #    self.open(base_url + '/register')
+    def test_register_email(self, *_):
+        '''
+        7005 make sure the email is valid when registering
+        '''
+        #open register page
+        self.open(base_url + '/register')
 
-        #fill in fields
-     #   self.type("#email")
-     #   self.type("#name")
-    #    self.type("#password")
-    #    self.type("#password2")
+        # fill in fields
+        self.type("#email", "someemail")
+        self.type("#name", "Test Frontend")
+        self.type("#password", "test_Frontend0!")
+        self.type("#password2", "test_Frontend0!")
 
         # click enter button
-     #   self.click('input[type="submit"]')
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Email format error", "#message")
+    
+    def test_register_password_minlength(self, *_):
+        '''
+        7006 Password must have minimum length of 6 when registering an account
+        '''
+        
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "Test Frontend")
+        self.type("#password", "a1A!")
+        self.type("#password2", "a1A!")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Password not strong enough", "#message")
+
+    def test_register_password_uppercase(self, *_):
+        '''
+        7007 Password must have one uppercase
+        '''
+        
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "Test Frontend")
+        self.type("#password", "test_frontend0!")
+        self.type("#password2", "test_frontend0!")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Password not strong enough", "#message")
+    
+    def test_register_password_lowercase(self, *_):
+        '''
+        7008  Password must have one lowercase when registering an account
+        '''
+        
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "Test Frontend")
+        self.type("#password", "TEST_FRONTEND0!")
+        self.type("#password2", "TEST_FRONTEND0!")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Password not strong enough", "#message")
+    
+    def test_register_password_special(self, *_):
+        '''
+        7009  Password must have one special character
+        '''
+        
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "Test Frontend")
+        self.type("#password", "test_frontend00")
+        self.type("#password2", "test_frontend00")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Password not strong enough", "#message")
+    
+    def test_register_nonempty_username(self, *_):
+        '''
+        7010 Username must be non-empty when registering an account
+        '''
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "$$$$$$$$")
+        self.type("#password", "test_Frontend0!")
+        self.type("#password2", "test_Frontend0!")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Username is not alphanumeric and cannot start or end with a space", "#message")
+    
+    def test_register_beginspace_username (self, *_):
+        '''
+        7011 Cannot have a space at the start of username when registering an account
+        '''
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", " Test Frontend")
+        self.type("#password", "test_Frontend0!")
+        self.type("#password2", "test_Frontend0!")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Username is not alphanumeric and cannot start or end with a space", "#message")
+    
+    def test_register_endspace_username (self, *_):
+        '''
+        7012 Cannot have a space at the end of username when registering an account
+        '''
+        #open register page
+        self.open(base_url + '/register')
+
+        # fill in fields
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "Test Frontend ")
+        self.type("#password", "test_Frontend0!")
+        self.type("#password2", "test_Frontend0!")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # Check if redirected
+        self.assert_element("#message")
+        self.assert_text("Username is not alphanumeric and cannot start or end with a space", "#message")

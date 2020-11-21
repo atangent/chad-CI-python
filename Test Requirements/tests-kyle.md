@@ -42,7 +42,7 @@ Actions:
 - click element `input[type="submit"]` submit to POST to current route
 - assert that the user is successfully redirected to login
 
-### Test case 7003 - R2 - Make sure you cannot register with email or password fields empty (F)
+### Test case 7003 - R2 - Make sure you cannot register with email or password fields empty (F) (HTML PROTECTED CANNOT TEST)
 
 Assumptions:
 - register page exists
@@ -171,7 +171,7 @@ Actions:
 - click element `input[type="submit"]`
 - ensure error message shows
 
-### Test case 7010 - R2 - Username must be non-empty when registering an account (B)
+### Test case 7010 - R2 - Username must be non-empty when registering an account (OBSOLETE; HTML DOES THIS, CAN'T BE TESTED)
 
 Assumptions:
 - none 
