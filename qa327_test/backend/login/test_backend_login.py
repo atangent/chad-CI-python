@@ -7,9 +7,9 @@ from qa327.models import User
 
 # Mock a sample user
 test_user = User(
-    email='test@test.com',
+    email='qatestprof@gmail.com',
     name='Test User',
-    password='Password1!'
+    password='Password1!test'
 )
 
 @pytest.mark.usefixtures('server')

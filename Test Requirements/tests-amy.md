@@ -31,7 +31,7 @@ Actions:
 - open /login again
 - validate that current page contains `#welcome-header` element
 
-### Test case 2003 - R1.4 - The login page provides a login form which requests two fields: email and passwords
+### Test case 2003 - R1.4 - The login page provides a login form which requests two fields: email and passwords (OBSOLETE))
 Mocking:
 - none
 
@@ -40,7 +40,7 @@ Actions:
 - check for element `#email`
 - check for element `#password`
 
-### Test case 2004 - R1.5 - The login form can be submitted as a POST request to the current URL (/login)
+### Test case 2004 - R1.5 - The login form can be submitted as a POST request to the current URL (/login) (OBSOLETE)
 Mocking:
 - mock backend.get_user to return a test_user instance
 
@@ -53,7 +53,8 @@ Actions:
 - open /login again
 - send post request to /login
 
-### Test case 2005 - R1.6 - Email and password both cannot be empty
+### Test case 2005 - R1.6 - Email and password both cannot be empty (OBSOLETE)
+#note: flawed because HTML blocks submission of empty fields so it won't let you press submit, that requirement only concerns backend testing
 Mocking:
 - mock backend.get_user to return a test_user instance
 
@@ -74,6 +75,7 @@ Actions:
 - make sure error message shows that fields can't be empty
 
 ### Test case 2006 - R1.7 - Email has to follow addr-spec defined in RFC 5322
+
 Mocking:
 - mock backend.get_user to return a test_user instance
 
@@ -100,7 +102,7 @@ Actions:
 - ensure error message shows that pwd must meet complexity req
 - open /login
 - enter test_user's email into element `#email`
-- enter `skdjFAXaks5&5` into elem `#password`
+- enter `skdjFAXaks55` into elem `#password`
 - click element `input[type="submit"]`
 - compare input text in `#password` to requirements
 - ensure error message shows that pwd must meet complexity req

@@ -42,7 +42,7 @@ Actions:
 - click element `input[type="submit"]` submit to POST to current route
 - assert that the user is successfully redirected to login
 
-### Test case 7003 - R2 - Make sure you cannot register with email or password fields empty (F)
+### Test case 7003 - R2 - Make sure you cannot register with email or password fields empty (F) (HTML PROTECTED CANNOT TEST)
 
 Assumptions:
 - register page exists
@@ -80,56 +80,6 @@ Actions:
 - enter test_user's password2 into element `#password2`
 - click element `input[type="submit"]` submit to POST to current route
 - assert that the user is successfully redirected to login
-
-### Test case 7005 - R2 - Make sure an error message is returned when failing to meet a validation constraint  (F)
-
-Assumptions:
-- none 
-
-Mocking:
-- creating a test_user instance
-
-Actions:
-- open /logout (to invalidate any logged-in sessions that may exist)
-- open /login
-- enter test_user's email into element `#email`
-- enter `a` into elem `#user`
-- enter test_user's password into element `#password`
-- enter test_user's password into element `#password2`
-- click element `input[type="submit"]`
-- compare input text in `#password` to requirements
-- ensure error message shows
-- open /login
-- enter test_user's email into element `#email`
-- enter `abcabcabcabcabcabcabc` into elem `#user`
-- enter test_user's password into element `#password`
-- enter test_user's password into element `#password2`
-- click element `input[type="submit"]`
-- compare input text in `#password` to requirements
-- ensure error message shows
-- open /login
-- enter test_user's email into element `#email`
-- enter ` bcabcabcabcabcabca` into elem `#user`
-- enter test_user's password into element `#password`
-- enter test_user's password into element `#password2`
-- click element `input[type="submit"]`
-- compare input text in `#password` to requirements
-- ensure error message shows
-- open /login
-- enter test_user's email into element `#email`
-- enter `bcabcabcabcabcabca ` into elem `#user`
-- enter test_user's password into element `#password`
-- enter test_user's password into element `#password2`
-- click element `input[type="submit"]`
-- compare input text in `#password` to requirements
-- ensure error message shows
-- enter test_user's email into element `#email`
-- enter `bcabcabcabca$$$abca` into elem `#user`
-- enter test_user's password into element `#password`
-- enter test_user's password into element `#password2`
-- click element `input[type="submit"]`
-- compare input text in `#password` to requirements
-- ensure error message shows
 
 ### Test case 7005 - R2 - Email field must match the regex that defines valid emails when registering an account
 
@@ -221,7 +171,7 @@ Actions:
 - click element `input[type="submit"]`
 - ensure error message shows
 
-### Test case 7010 - R2 - Username must be non-empty when registering an account (B)
+### Test case 7010 - R2 - Username must be non-empty when registering an account (OBSOLETE; HTML DOES THIS, CAN'T BE TESTED)
 
 Assumptions:
 - none 

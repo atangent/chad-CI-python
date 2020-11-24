@@ -34,12 +34,15 @@ def register_post():
 
     elif not is_valid_password(password):
         error_message = "Password not strong enough"
+    elif not name.replace(' ', '').isalnum() or name[0] == ' ' or name[-1] == ' ':
+        error_message = "Username is not alphanumeric and cannot start or end with a space"
     else:
         user = bn.get_user(email)
         if user:
             error_message = "User exists"
         elif not bn.register_user(email, name, password, password2):
             error_message = "Failed to store user info."
+
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
     if error_message:
