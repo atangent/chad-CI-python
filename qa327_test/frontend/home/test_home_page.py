@@ -21,16 +21,15 @@ test_tickets = [
 
 
 class HomePageTest(BaseCase):
-
+  
   def test_if_not_logged_in(self):
-    """ If user isn't logged in, redirect to login """
     self.open(base_url + '/logout')
     self.open(base_url)
     self.assert_element("#message")
     self.assert_text("Please login", "#message")
-
+  
   @patch('qa327.backend.get_user', return_value=test_user)
-  def test_header_hi_username(self):
+  def test_header_hi_username(self, *_):
     self.open(base_url + '/logout')
     self.open(base_url + '/login')
     self.type("#email", "test_frontend@test.com")
@@ -38,7 +37,8 @@ class HomePageTest(BaseCase):
     self.click('input[type="submit"]')
     self.open(base_url)
     self.assert_element("#welcome-header")
-    self.assert_text("Hi test_frontend", "#welcome-header")
+    self.assert_text("Welcome test_frontend !", "#welcome-header")
+
 
   @patch('qa327.backend.get_user', return_value=test_user)
   def test_shows_user_balance(self, *_):
