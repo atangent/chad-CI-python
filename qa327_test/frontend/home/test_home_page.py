@@ -70,30 +70,29 @@ class HomePageTest(BaseCase):
   #   self.open(base_url)
   #   self.assert_element("#tickets")
 
-  @patch('qa327.backend.get_user', return_value=test_user)
-  @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-  def test_sell_form_fields(self, *_):
-    self.open(base_url + '/logout')
-    self.open(base_url + '/login')
-    self.type("#email", "test_frontend@test.com")
-    self.type("#password", "test_Frontend0!")
-    self.click('input[type="submit"]')
-    self.open(base_url)
-    self.assert_element("#sell-ticket")
-    self.assert_element("#sell_name")
-    self.assert_element("#sell_quantity")
-    self.assert_element("#sell_price")
-    self.assert_element("#sell_exp_date")
-
   # @patch('qa327.backend.get_user', return_value=test_user)
   # @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-  # def test_buy_form_fields(self, *_):
+  # def test_sell_form_fields(self, *_):
   #   self.open(base_url + '/logout')
   #   self.open(base_url + '/login')
   #   self.type("#email", "test_frontend@test.com")
   #   self.type("#password", "test_Frontend0!")
   #   self.click('input[type="submit"]')
   #   self.open(base_url)
-  #   for i, field in enumerate(self.get_element("#")):
-  #     self.assert_element("#name")
-  #     self.assert_element("#quantity")
+  #   self.assert_element("#sell-ticket")
+  #   self.assert_element("#sell_name")
+  #   self.assert_element("#sell_quantity")
+  #   self.assert_element("#sell_price")
+  #   self.assert_element("#sell_exp_date")
+
+  @patch('qa327.backend.get_user', return_value=test_user)
+  @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+  def test_buy_form_fields(self, *_):
+    self.open(base_url + '/logout')
+    self.open(base_url + '/login')
+    self.type("#email", "test_frontend@test.com")
+    self.type("#password", "test_Frontend0!")
+    self.click('input[type="submit"]')
+    self.open(base_url)
+    self.assert_element("#buy_name")
+    self.assert_element("#buy_quantity")
