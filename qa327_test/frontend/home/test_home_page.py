@@ -37,7 +37,7 @@ class HomePageTest(BaseCase):
     self.click('input[type="submit"]')
     self.open(base_url)
     self.assert_element("#welcome-header")
-    self.assert_text("Welcome test_frontend !", "#welcome-header")
+    self.assert_text("Hi test_frontend", "#welcome-header")
 
   @patch('qa327.backend.get_user', return_value=test_user)
   def test_shows_user_balance(self, *_):
