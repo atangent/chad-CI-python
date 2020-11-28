@@ -1,6 +1,5 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
-from qa327 import exceptions
 from flask import url_for
 import qa327.backend as bn
 import re
