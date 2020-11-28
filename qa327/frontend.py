@@ -266,8 +266,8 @@ def ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_
 def update_ticket():
     ticket_id = request.form['id']
     ticket_name = request.form['name']
-    ticket_quantity = request.form['quantity']
-    ticket_price = request.form['price']
+    ticket_quantity = int(request.form['quantity'])
+    ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
 
     message = "Ticket successfully updated"
@@ -295,8 +295,8 @@ def update_ticket():
 
 @app.route('/buy', methods=['POST'])
 def buy_ticket():
-    ticket_id = request.form['ticket_id']
-    buyer_id = request.form['buyer_id']
+    ticket_id = int(request.form['ticket_id'])
+    buyer_id = int(request.form['buyer_id'])
 
     message = "Ticket purchased successfully."
     user_balance = bn.get_user(buyer_id).balance
@@ -313,9 +313,11 @@ def buy_ticket():
 @app.route('/sell', methods=['POST'])
 def sell_ticket():
     ticket_name = request.form['name']
-    ticket_quantity = request.form['quantity']
-    ticket_price = request.form['price']
+    ticket_quantity = int(request.form['quantity'])
+    ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
+    ticket_date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d')
+    user_id = request.form['user']
 
     message = "Ticket created successfully."
 
@@ -329,9 +331,9 @@ def sell_ticket():
     if not is_ticket_price_valid(ticket_price):
         message = "Ticket price is invalid."
     # date
-    if not is_ticket_date_valid(ticket_date):
-        message = "Ticket data is invalid."
+    #if not is_ticket_date_valid(ticket_date):
+    #    message = "Ticket data is invalid."
 
-    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date)
+    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user_id)
 
     return redirect(url_for('profile', message=message))
