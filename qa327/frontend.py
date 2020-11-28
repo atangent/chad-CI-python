@@ -206,25 +206,17 @@ def page_not_found(error):
 #####
 # TICKET METHODS
 #####
-def is_ticket_name_alphanum(ticket_name):
-    return True if all(char.isalnum() for char in ticket_name) else False
-
-
-def is_ticket_name_length_ok(ticket_name):
-    return True if len(ticket_name) > 60 else False
-
+def is_ticket_name_valid(ticket_name):
+    return True if all(char.isalnum() for char in ticket_name) and 6 <= len(ticket_name) <= 60 else False
 
 def is_quantity_of_tickets_valid(num_tickets):
     return True if num_tickets > 0 and num_tickets <= 100 else False
 
-
 def does_ticket_exist(ticket_id):
     return True if bn.get_ticket(id) is not None else False
 
-
 def is_ticket_price_valid(ticket_price):
     return True if ticket_price >= 0 and ticket_price <= 100 else False
-
 
 def is_ticket_date_valid(ticket_date):
     try:
@@ -232,6 +224,9 @@ def is_ticket_date_valid(ticket_date):
         return True
     except ValueError:
         return False
+
+def does_user_have_sufficient_balance(user_balance, ticket_price):
+    return True if user_balance >= ticket_price else False
 
 def ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date):
     # update, buy
@@ -244,18 +239,22 @@ def ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_
         message = "Ticket name can only contain alphnumeric characters."
         return redirect(url_for('profile', message=message))
 
+    # sell, update
     if not is_quantity_of_tickets_valid(ticket_quantity):
         message = "Ticket quantity must be between 0 and 100"
         return redirect(url_for('profile', message=message))
 
+    # sell, update
     if not is_ticket_price_valid(ticket_price):
-        message = "Ticket pirce is invalid"
+        message = "Ticket price is invalid"
         return redirect(url_for('profile', message=message))
 
+    # sell, update
     if not is_ticket_name_length_ok(ticket_name):
         message = "Ticket name length is more than 60 characters."
         return redirect(url_for('profile', message=message))
     
+    # sell, update
     if not is_ticket_date_valid(ticket_date):
         message = "Ticket data is invalid."
         return redirect(url_for('profile', message=message))
@@ -269,23 +268,68 @@ def update_ticket():
     ticket_price = request.form['price']
     ticket_date = request.form['date']
 
-    ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
+    message = "Ticket successfully updated"
+
+    # check ticket exists
+    if not does_ticket_exist(ticket_id):
+        message = "Ticket not found."
+    # name checks
+    if not is_ticket_name_valid(ticket_name):
+        message = "Ticket name is invalid."
+    # quantity
+    if not is_quantity_of_tickets_valid(ticket_quantity):
+        message = "Ticket quantity must be between 0 and 100."
+    # price
+    if not is_ticket_price_valid(ticket_price):
+        message = "Ticket price is invalid."
+    # date
+    if not is_ticket_date_valid(ticket_date):
+        message = "Ticket data is invalid."
 
     bn.update_ticket(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
+
+    return redirect(url_for('profile', message=message))
 
 
 @app.route('/buy', methods=['POST'])
 def buy_ticket():
+    ticket_id = request.form['ticket_id']
+    buyer_id = request.form['buyer_id']
+
+    message = "Ticket purchased successfully."
+    user_balance = bn.get_user(buyer_id).balance
+    ticket_price = bn.get_ticket(ticket_id).price
+
+    if does_user_have_sufficient_balance(user_balance, ticket_price):
+        message = "User balance does not have sufficient funds."
     
+    bn.buy_ticket(ticket_id, buyer_id)
+
+    return redirect(url_for('profile', message=message))
 
 
 @app.route('/sell', methods=['POST'])
 def sell_ticket():
-    ticket_id = request.form['id']
     ticket_name = request.form['name']
     ticket_quantity = request.form['quantity']
     ticket_price = request.form['price']
     ticket_date = request.form['date']
 
-    ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
-    
+    message = "Ticket created successfully."
+
+    # name checks
+    if not is_ticket_name_valid(ticket_name):
+        message = "Ticket name is invalid."
+    # quantity
+    if not is_quantity_of_tickets_valid(ticket_quantity):
+        message = "Ticket quantity must be between 0 and 100."
+    # price
+    if not is_ticket_price_valid(ticket_price):
+        message = "Ticket price is invalid."
+    # date
+    if not is_ticket_date_valid(ticket_date):
+        message = "Ticket data is invalid."
+
+    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date)
+
+    return redirect(url_for('profile', message=message))

@@ -48,24 +48,34 @@ def register_user(email, name, password, password2):
     db.session.commit()
     return None
 
-def get_ticket(id):
-    ticket = Ticket.query().filter_by(id=id)
+def get_ticket(ticket_id):
+    ticket = Ticket.query().filter_by(id=ticket_id)
     return ticket
 
-def update_ticket(id, name, quantity, price, date):
-    ticket = get_ticket(id)
+def update_ticket(ticket_id, name, quantity, price, date):
+    ticket = get_ticket(ticket_id)
     ticket.name = name
     ticket.quantity = quantity
     ticket.price = price
     ticket.date = date
     db.session.commit()
 
+def buy_ticket(ticket_id, buyer_id):
+    ticket = get_ticket(ticket_id)
+    ticket.user = buyer_id
+    buyer_user = get_user(buyer_id)
+    buyer_user.balance -= ticket.price*1.35*1.05
+    db.sesion.commit()
 
-def buy_ticket(id):
-    pass
-
-def sell_ticket(id):
-    pass
+def sell_ticket(name, quantity, price, date, user):
+    ticket = Ticket()
+    ticket.name = name
+    ticket.quantity = quantity
+    ticket.price = price
+    ticket.date = date
+    ticket.user = user
+    db.session.add(ticket)
+    db.session.commit()
 
 def get_all_tickets():
     tickets = Ticket.query.all()
