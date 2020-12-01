@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 """
 This file defines all models used by the server
 These models provide us a object-oriented access
-to the underlying database, so we don't need to 
+to the underlying database, so we don't need to
 write SQL queries such as 'select', 'update' etc.
 """
 

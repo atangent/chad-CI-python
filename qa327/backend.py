@@ -50,10 +50,24 @@ def register_user(email, name, password, password2):
     return None
 
 def get_ticket(ticket_id):
+    """
+    Get a ticket by a given id
+    :param ticket_id: the id of the ticket
+    :return: a ticket that has the matched id
+    """
     ticket = Ticket.query.filter_by(id=ticket_id).first()
     return ticket
 
 def update_ticket(ticket_id, name, quantity, price, date):
+    """
+    Update ticket info in the database
+    :param ticket_id: the id of the ticket to be updated
+    :param name: the name of the ticket
+    :param quantity: the amount of tickets for sale
+    :param price: the price of the ticket
+    :param date: the expiry date of the ticket
+    :return: an error message if there is any, or None if register succeeds
+    """
     ticket = get_ticket(ticket_id)
     ticket.name = name
     ticket.quantity = quantity
@@ -70,6 +84,16 @@ def buy_ticket(ticket_id, buyer_id):
     db.session.commit()
 
 def sell_ticket(name, quantity, price, date, user):
+    """
+    Create new ticket in the database
+    :param ticket_id: the id of the ticket to be updated
+    :param name: the name of the ticket
+    :param quantity: the amount of tickets for sale
+    :param price: the price of the ticket
+    :param date: the expiry date of the ticket
+    :param user: seller of the ticket
+    :return: an error message if there is any, or None if register succeeds
+    """
     ticket = Ticket()
     ticket.name = name
     ticket.quantity = quantity
@@ -80,5 +104,9 @@ def sell_ticket(name, quantity, price, date, user):
     db.session.commit()
 
 def get_all_tickets():
+    """
+    Get all tickets available for sale
+    :return: a list of currently available tickets
+    """
     tickets = Ticket.query.all()
     return tickets

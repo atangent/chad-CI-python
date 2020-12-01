@@ -152,6 +152,9 @@ def logout():
         session.pop('logged_in', None)
     return redirect('/')
 
+#####
+# PROFILE METHODS
+#####
 
 def authenticate(inner_function):
     """
@@ -200,31 +203,67 @@ def profile(user):
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets, message=message)
 
+#####
+# 404 METHODS
+#####
 
 @app.errorhandler(404)
 def page_not_found(error):
+    """
+    Returns the 404 page when accessing a url that doesn't exist
+    """
     return render_template('404.html')
 
 #####
 # TICKET METHODS
 #####
 def is_ticket_name_valid(ticket_name):
+    """
+    Checks if the ticket name is valid according to the specifications.
+    :param ticket_name: the name of the ticket to be tested
+    :returns: True if the ticket name satisfies all requirements
+    """
     return True if ticket_name[0].isalnum() and ticket_name[-1].isalnum() and all(char.isalnum() or char.isspace() for char in ticket_name[1:-1]) and 6 <= len(ticket_name) <= 60 else False
 
 def is_quantity_of_tickets_valid(num_tickets):
+    """
+    Checks if the ticket quantity is valid according to the specifications.
+    :param num_tickets: the quantity of tickets to be tested
+    :returns: True if the ticket quantity satisfies all requirements
+    """
     return True if num_tickets > 0 and num_tickets <= 100 else False
 
 def does_ticket_exist(ticket_id):
+    """
+    Checks if the ticket id exists in the database.
+    :param ticket_id: the id of the ticket to be tested
+    :returns: True if the ticket id exists in the database
+    """
     return True if bn.get_ticket(ticket_id) is not None else False
 
 def is_ticket_price_valid(ticket_price):
+    """
+    Checks if the ticket price is valid according to the specifications.
+    :param ticket_price: the price of the ticket to be tested
+    :returns: True if the ticket price satisfies all requirements
+    """
     return True if ticket_price >= 0 and ticket_price <= 100 else False
 
 def is_ticket_date_valid(ticket_date):
+    """
+    Checks if the ticket date is valid according to the specifications.
+    :param ticket_date: the date of the ticket to be tested
+    :returns: True if the ticket date satisfies all requirements
+    """
     return True if ticket_date > datetime.datetime.now() else False
 
 def does_user_have_sufficient_balance(user_balance, ticket_price):
-    print(user_balance.compare(ticket_price*decimal.Decimal("1.35")*decimal.Decimal("1.05")))
+    """
+    Checks if the user has sufficient funds to purchase the ticket, including all fees and taxes.
+    :param user_balance: the balance of the user
+    :param ticket_price: the price of the ticket
+    :returns: True if the usre has sufficient funds to purchase the ticket
+    """
     return True if user_balance.compare(ticket_price*decimal.Decimal("1.35")*decimal.Decimal("1.05")) != -1 else False
 
 @app.route('/update', methods=['POST'])
@@ -243,23 +282,24 @@ def updateticket():
     # check ticket exists
     if not does_ticket_exist(ticket_id):
         message = "Ticket not found."
-    # name checks
+    # check name
     if not is_ticket_name_valid(ticket_name):
         message = "Ticket name is invalid."
-    # quantity
+    # check quantity
     if not is_quantity_of_tickets_valid(ticket_quantity):
         message = "Ticket quantity must be between 0 and 100."
-    # price
+    # check price
     if not is_ticket_price_valid(ticket_price):
         message = "Ticket price is invalid."
-    # date
+    # check date
     if not is_ticket_date_valid(ticket_date):
         message = "Ticket data is invalid."
 
-    if not message:
+    if not message: # if message is empty, indicating no validation errors
         bn.update_ticket(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
         message = "Ticket successfully updated"
 
+    # redirect user to profile page with result message
     return redirect("/?message={}".format(message))
 
 @app.route('/buy', methods=['POST'])
@@ -272,13 +312,15 @@ def buyticket():
     user_balance = buyer.balance
     ticket_price = bn.get_ticket(ticket_id).price
 
+    # check for sufficient funds
     if not does_user_have_sufficient_balance(user_balance, ticket_price):
         message = "User balance does not have sufficient funds."
     
-    if not message:
+    if not message: # if message is empty, indicating no validation errors
         bn.buy_ticket(ticket_id, buyer.email)
         message = "Ticket purchased successfully."
 
+    # redirect user to profile page with result message
     return redirect("/?message={}".format(message))
 
 @app.route('/sell', methods=['POST'])
@@ -293,22 +335,23 @@ def sellticket():
 
     message = ""
 
-    # name checks
+    # check name
     if not is_ticket_name_valid(ticket_name):
         message = "Ticket name is invalid."
-    # quantity
+    # check quantity
     if not is_quantity_of_tickets_valid(ticket_quantity):
         message = "Ticket quantity must be between 0 and 100."
-    # price
+    # check price
     if not is_ticket_price_valid(ticket_price):
         message = "Ticket price is invalid."
-    # date
+    # check date
     if not is_ticket_date_valid(ticket_date):
         message = "Ticket date is invalid."
 
-    if not message:
+    if not message: # if message is empty, indicating no validation errors
         message = "Ticket created successfully."
         bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user.id)
 
+    # redirect user to profile page with result message
     return redirect("/?message={}".format(message))
 
