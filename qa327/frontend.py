@@ -4,6 +4,7 @@ from flask import url_for
 import qa327.backend as bn
 import re
 import datetime
+import decimal
 
 """
 This file defines the front-end part of the service.
@@ -193,11 +194,10 @@ def profile(user):
     # by using @authenticate, we don't need to re-write
     # the login checking code all the time for other
     # front-end portals
-    tickets = bn.get_all_tickets()
+    message = ""
     if ('message' in request.args):
-        message = request.args['message']
-    else:
-        message = ""
+        message = request.args.get('message')
+    tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets, message=message)
 
 
@@ -209,68 +209,36 @@ def page_not_found(error):
 # TICKET METHODS
 #####
 def is_ticket_name_valid(ticket_name):
-    return True if all(char.isalnum() for char in ticket_name) and 6 <= len(ticket_name) <= 60 else False
+    return True if ticket_name[0].isalnum() and ticket_name[-1].isalnum() and all(char.isalnum() or char.isspace() for char in ticket_name[1:-1]) and 6 <= len(ticket_name) <= 60 else False
 
 def is_quantity_of_tickets_valid(num_tickets):
     return True if num_tickets > 0 and num_tickets <= 100 else False
 
 def does_ticket_exist(ticket_id):
-    return True if bn.get_ticket(id) is not None else False
+    return True if bn.get_ticket(ticket_id) is not None else False
 
 def is_ticket_price_valid(ticket_price):
     return True if ticket_price >= 0 and ticket_price <= 100 else False
 
 def is_ticket_date_valid(ticket_date):
-    try:
-        datetime.datetime.strptime(ticket_date, '%Y%m%d')
-        return True
-    except ValueError:
-        return False
+    return True if ticket_date > datetime.datetime.now() else False
 
 def does_user_have_sufficient_balance(user_balance, ticket_price):
-    return True if user_balance >= ticket_price else False
-
-def ticket_checks(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date):
-    # update, buy
-    if not does_ticket_exist(ticket_id):
-        message = "Ticket not found."
-        return redirect(url_for('profile', message=message))
-
-    # sell, update, buy
-    if not is_ticket_name_alphanum(ticket_name):
-        message = "Ticket name can only contain alphnumeric characters."
-        return redirect(url_for('profile', message=message))
-
-    # sell, update
-    if not is_quantity_of_tickets_valid(ticket_quantity):
-        message = "Ticket quantity must be between 0 and 100"
-        return redirect(url_for('profile', message=message))
-
-    # sell, update
-    if not is_ticket_price_valid(ticket_price):
-        message = "Ticket price is invalid"
-        return redirect(url_for('profile', message=message))
-
-    # sell, update
-    if not is_ticket_name_length_ok(ticket_name):
-        message = "Ticket name length is more than 60 characters."
-        return redirect(url_for('profile', message=message))
-    
-    # sell, update
-    if not is_ticket_date_valid(ticket_date):
-        message = "Ticket data is invalid."
-        return redirect(url_for('profile', message=message))
-
+    print(user_balance.compare(ticket_price*decimal.Decimal("1.35")*decimal.Decimal("1.05")))
+    return True if user_balance.compare(ticket_price*decimal.Decimal("1.35")*decimal.Decimal("1.05")) != -1 else False
 
 @app.route('/update', methods=['POST'])
-def update_ticket():
-    ticket_id = request.form['id']
+def updateticket():
+    ticket_id = request.form['ticket_id']
     ticket_name = request.form['name']
     ticket_quantity = int(request.form['quantity'])
     ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
+    ticket_date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d')
+    user_email = request.form['user']
+    user = bn.get_user(user_email)
 
-    message = "Ticket successfully updated"
+    message = ""
 
     # check ticket exists
     if not does_ticket_exist(ticket_id):
@@ -288,38 +256,42 @@ def update_ticket():
     if not is_ticket_date_valid(ticket_date):
         message = "Ticket data is invalid."
 
-    bn.update_ticket(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
+    if not message:
+        bn.update_ticket(ticket_id, ticket_name, ticket_quantity, ticket_price, ticket_date)
+        message = "Ticket successfully updated"
 
-    return redirect(url_for('profile', message=message))
-
+    return redirect("/?message={}".format(message))
 
 @app.route('/buy', methods=['POST'])
-def buy_ticket():
+def buyticket():
     ticket_id = int(request.form['ticket_id'])
-    buyer_id = int(request.form['buyer_id'])
+    buyer_email = request.form['user']
+    buyer = bn.get_user(buyer_email)
 
-    message = "Ticket purchased successfully."
-    user_balance = bn.get_user(buyer_id).balance
+    message = ""
+    user_balance = buyer.balance
     ticket_price = bn.get_ticket(ticket_id).price
 
-    if does_user_have_sufficient_balance(user_balance, ticket_price):
+    if not does_user_have_sufficient_balance(user_balance, ticket_price):
         message = "User balance does not have sufficient funds."
     
-    bn.buy_ticket(ticket_id, buyer_id)
+    if not message:
+        bn.buy_ticket(ticket_id, buyer.email)
+        message = "Ticket purchased successfully."
 
-    return redirect(url_for('profile', message=message))
-
+    return redirect("/?message={}".format(message))
 
 @app.route('/sell', methods=['POST'])
-def sell_ticket():
+def sellticket():
     ticket_name = request.form['name']
     ticket_quantity = int(request.form['quantity'])
     ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
     ticket_date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d')
-    user_id = request.form['user']
+    user_email = request.form['user']
+    user = bn.get_user(user_email)
 
-    message = "Ticket created successfully."
+    message = ""
 
     # name checks
     if not is_ticket_name_valid(ticket_name):
@@ -331,9 +303,12 @@ def sell_ticket():
     if not is_ticket_price_valid(ticket_price):
         message = "Ticket price is invalid."
     # date
-    #if not is_ticket_date_valid(ticket_date):
-    #    message = "Ticket data is invalid."
+    if not is_ticket_date_valid(ticket_date):
+        message = "Ticket date is invalid."
 
-    bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user_id)
+    if not message:
+        message = "Ticket created successfully."
+        bn.sell_ticket(ticket_name, ticket_quantity, ticket_price, ticket_date, user.id)
 
-    return redirect(url_for('profile', message=message))
+    return redirect("/?message={}".format(message))
+
