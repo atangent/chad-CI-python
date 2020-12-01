@@ -49,7 +49,7 @@ def register_user(email, name, password, password2):
     return None
 
 def get_ticket(ticket_id):
-    ticket = Ticket.query().filter_by(id=ticket_id)
+    ticket = Ticket.query.filter_by(id=ticket_id).first()
     return ticket
 
 def update_ticket(ticket_id, name, quantity, price, date):
