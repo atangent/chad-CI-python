@@ -19,11 +19,19 @@ Is triggered by a POST request. Takes in input text from email and password fiel
 ## Models
 
 **User** is a model containing fields
-id : primary key as a Integer
+id : primary key as an Integer
 email : unique email as a string
 password : User’s password as a String
 name : User’s username
 balance : User’s cash balance as a Numeric type
+
+**Ticket** is a model containing fields
+id : primary key as an Integer
+user : foreign key to User table, seller of ticket
+date : expiry date of the tickets
+name : name of the tickets as a string
+price : price of tickets as a Numeric type
+quantity : amount of tickets for sale as an Integer
 
 ## Register (R2)
 
@@ -47,6 +55,45 @@ Is a method that is triggered upon a POST request to /register which retrieves t
 
 *profile*
 Takes the current user from the `authenticate` function and returns the profile page with the user’s name, balance, and tickets.
+
+
+## Sell (R4)
+
+**frontend.py**
+
+*sellticket*
+Processes the input from the Sell Ticket form, validates all values, and redirects user to profile page with result message.
+
+**backend.py**
+
+*sell_ticket*
+Takes the required data for a new Ticket and adds it to the database.
+
+
+## Update (R5)
+
+**frontend.py**
+
+*updateticket*
+Processes the input from the Update Ticket form, validates all values, and redirects user to profile page with result message.
+
+**backend.py**
+
+*update_ticket*
+Takes the required data for editing a Ticket and modifies the database accordingly.
+
+
+## Buy (R6)
+
+**frontend.py**
+
+*buyticket*
+Processes the input from the Buy Ticket form, validates all values, and redirects user to profile page with result message.
+
+**backend.py**
+
+*buy_ticket*
+Takes the required data to buy a ticket, processes the transaction, and updates the database accordingly.
 
 
 ## Logout (R7)
