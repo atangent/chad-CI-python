@@ -2,6 +2,8 @@
 
 {% block header %}
 <h1>{% block title %}Profile{% endblock %}</h1>
+{% endblock %}
+{% block head %}
 <script>
     function editTicket(row, ticket_id) {
         document.getElementById("update_id").value = ticket_id;
@@ -16,7 +18,7 @@
         document.getElementById("buy_name").value = row.children[0].innerHTML;
         document.getElementById("buy_quantity").value = row.children[1].innerHTML;
         document.getElementById("buy_price").value = row.children[2].innerHTML;
-        document.getElementById("buy_date").value = row.children[3].innerHTML;
+        document.getElementById("buy_exp_date").value = row.children[3].innerHTML;
     }
 </script>
 {% endblock %}
@@ -37,7 +39,6 @@
             <th>Quantity</th>
             <th>Price</th>
             <th>Expiry</th>
-            <th>Seller</th>
             <th>Actions</th>
         </tr>
         {% for ticket in tickets %}
@@ -46,11 +47,10 @@
             <td>{{ ticket.quantity }}</td>
             <td>{{ ticket.price }}</td>
             <td>{{ ticket.date }}</td>
-            <td>{{ ticket.user }}</td>
             {% if ticket.user == user.id %}
-            <td><button onclick="editTicket(this.parentElement, {{ ticket.id }})">Edit</button></td>
+            <td><button onclick="editTicket(this.parentElement.parentElement, {{ ticket.id }})">Edit</button></td>
             {% else %}
-            <td><button onclick="buyTicket(this.parentElement, {{ ticket.id }})">Buy</button></td>
+            <td><button onclick="buyTicket(this.parentElement.parentElement, {{ ticket.id }})">Buy</button></td>
             {% endif %}
         </tr>
         {% endfor %}
@@ -63,19 +63,19 @@
     Quantity: <input id="sell_quantity" type="number" name="quantity"/><br/>
     Price: <input id="sell_price" type="number" name="price"/><br/>
     Expiration Date: <input id="sell_exp_date" type="date" name="date"/><br/>
-    <input type="hidden" value="{{ user.id }}" name="user"/>
+    <input type="hidden" value="{{ user.email }}" name="user"/>
     <input type="submit"/>
 </form>
 <br/>
 <h2>Buy tickets</h2>
 <form id="buy-ticket" action="/buy" method="POST">
     <input type="hidden" id="buy_id" name="ticket_id"/>
-    Name: <input id="buy_name" type="text" name="name"/><br/>
-    Quantity: <input id="buy_quantity" type="number" name="quantity"/><br/>
-    Price: <input id="sell_price" type="number" name="price"/><br/>
-    Expiration Date: <input id="sell_exp_date" type="date" name="date"/><br/>
-    <input type="hidden" value="{{ user.id }}" name="user"/>
-    <input type="submit"/>
+    Name: <input disabled id="buy_name" type="text" name="name"/><br/>
+    Quantity: <input disabled id="buy_quantity" type="number" name="quantity"/><br/>
+    Price: <input disabled id="buy_price" type="number" name="price"/><br/>
+    Expiration Date: <input disabled id="buy_exp_date" type="date" name="date"/><br/>
+    <input type="hidden" value="{{ user.email }}" name="user"/>
+    <input type="submit" value="Buy"/>
 </form>
 <br/>
 <h2>Edit ticket</h2>
@@ -85,8 +85,8 @@
     Quantity: <input id="update_quantity" type="number" name="quantity"/><br/>
     Price: <input id="update_price" type="number" name="price"/><br/>
     Expiration Date: <input id="update_exp_date" type="date" name="date"/><br/>
-    <input type="hidden" value="{{ user.id }}" name="user"/>
-    <input type="submit"/>
+    <input type="hidden" value="{{ user.email }}" name="user"/>
+    <input type="submit" value="Save"/>
 </form>
 
 {% endblock %}
