@@ -1,5 +1,6 @@
 from qa327.models import db, User, Ticket
 from werkzeug.security import generate_password_hash, check_password_hash
+import decimal
 
 """
 This file defines all backend logic that interacts with database and other services
@@ -62,10 +63,11 @@ def update_ticket(ticket_id, name, quantity, price, date):
 
 def buy_ticket(ticket_id, buyer_id):
     ticket = get_ticket(ticket_id)
-    ticket.user = buyer_id
-    buyer_user = get_user(buyer_id)
-    buyer_user.balance -= ticket.price*1.35*1.05
-    db.sesion.commit()
+    buyer = get_user(buyer_id)
+    ticket.user = buyer.id
+    Ticket.query.filter_by(id=ticket_id).delete()
+    buyer.balance -= ticket.price*decimal.Decimal("1.35")*decimal.Decimal("1.05")
+    db.session.commit()
 
 def sell_ticket(name, quantity, price, date, user):
     ticket = Ticket()
