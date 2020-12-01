@@ -29,7 +29,7 @@ class Ticket(db.Model):
     A ticket model which defines a ticket
     """
     id = db.Column(db.Integer, primary_key=True)
-    user = db.Column(db.Integer, unique=True)
+    user = db.Column(db.Integer)
     date = db.Column(db.Date())
     name = db.Column(db.String(1000))
     price = db.Column(db.Numeric(10,2), default=0)
