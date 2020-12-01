@@ -223,7 +223,10 @@ def is_ticket_name_valid(ticket_name):
     :param ticket_name: the name of the ticket to be tested
     :returns: True if the ticket name satisfies all requirements
     """
-    return True if ticket_name[0].isalnum() and ticket_name[-1].isalnum() and all(char.isalnum() or char.isspace() for char in ticket_name[1:-1]) and 6 <= len(ticket_name) <= 60 else False
+    return (ticket_name[0].isalnum()) and \
+        (ticket_name[-1].isalnum()) and \
+        (all(char.isalnum() or char.isspace() for char in ticket_name[1:-1])) and \
+        (6 <= len(ticket_name) <= 60)
 
 def is_quantity_of_tickets_valid(num_tickets):
     """
@@ -231,7 +234,7 @@ def is_quantity_of_tickets_valid(num_tickets):
     :param num_tickets: the quantity of tickets to be tested
     :returns: True if the ticket quantity satisfies all requirements
     """
-    return True if num_tickets > 0 and num_tickets <= 100 else False
+    return 0 < num_tickets < 100
 
 def does_ticket_exist(ticket_id):
     """
@@ -239,7 +242,7 @@ def does_ticket_exist(ticket_id):
     :param ticket_id: the id of the ticket to be tested
     :returns: True if the ticket id exists in the database
     """
-    return True if bn.get_ticket(ticket_id) is not None else False
+    return bn.get_ticket(ticket_id)
 
 def is_ticket_price_valid(ticket_price):
     """
@@ -247,7 +250,7 @@ def is_ticket_price_valid(ticket_price):
     :param ticket_price: the price of the ticket to be tested
     :returns: True if the ticket price satisfies all requirements
     """
-    return True if ticket_price >= 0 and ticket_price <= 100 else False
+    return 0 <=ticket_price <= 100
 
 def is_ticket_date_valid(ticket_date):
     """
@@ -255,7 +258,7 @@ def is_ticket_date_valid(ticket_date):
     :param ticket_date: the date of the ticket to be tested
     :returns: True if the ticket date satisfies all requirements
     """
-    return True if ticket_date > datetime.datetime.now() else False
+    return ticket_date > datetime.datetime.now()
 
 def does_user_have_sufficient_balance(user_balance, ticket_price):
     """
@@ -264,7 +267,7 @@ def does_user_have_sufficient_balance(user_balance, ticket_price):
     :param ticket_price: the price of the ticket
     :returns: True if the usre has sufficient funds to purchase the ticket
     """
-    return True if user_balance.compare(ticket_price*decimal.Decimal("1.35")*decimal.Decimal("1.05")) != -1 else False
+    return user_balance.compare(ticket_price*decimal.Decimal("1.35")*decimal.Decimal("1.05")) != -1
 
 @app.route('/update', methods=['POST'])
 def updateticket():
