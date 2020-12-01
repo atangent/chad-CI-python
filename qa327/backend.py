@@ -66,7 +66,7 @@ def update_ticket(ticket_id, name, quantity, price, date):
     :param quantity: the amount of tickets for sale
     :param price: the price of the ticket
     :param date: the expiry date of the ticket
-    :return: an error message if there is any, or None if register succeeds
+    :return: an error message if there is any, or None if update succeeds
     """
     ticket = get_ticket(ticket_id)
     ticket.name = name
@@ -76,6 +76,12 @@ def update_ticket(ticket_id, name, quantity, price, date):
     db.session.commit()
 
 def buy_ticket(ticket_id, buyer_id):
+    """
+    Process ticket transaction
+    :param ticket_id: the id of the ticket to be purchased
+    :param buyer_id: the id of the purchasing user
+    :return: an error message if there is any, or None if transaction succeeds
+    """
     ticket = get_ticket(ticket_id)
     buyer = get_user(buyer_id)
     ticket.user = buyer.id
@@ -92,7 +98,7 @@ def sell_ticket(name, quantity, price, date, user):
     :param price: the price of the ticket
     :param date: the expiry date of the ticket
     :param user: seller of the ticket
-    :return: an error message if there is any, or None if register succeeds
+    :return: an error message if there is any, or None if creation succeeds
     """
     ticket = Ticket()
     ticket.name = name
