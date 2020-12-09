@@ -42,15 +42,15 @@
             <th>Actions</th>
         </tr>
         {% for ticket in tickets %}
-        <tr>
-            <td>{{ ticket.name }}</td>
-            <td>{{ ticket.quantity }}</td>
-            <td>{{ ticket.price }}</td>
-            <td>{{ ticket.date }}</td>
+        <tr id="ticket-{{ ticket.name }}">
+            <td id="ticket-{{ ticket.name }}-name">{{ ticket.name }}</td>
+            <td id="ticket-{{ ticket.name }}-quantity">{{ ticket.quantity }}</td>
+            <td id="ticket-{{ ticket.name }}-price">{{ ticket.price }}</td>
+            <td id="ticket-{{ ticket.name }}-date">{{ ticket.date }}</td>
             {% if ticket.user == user.id %}
             <td><button onclick="editTicket(this.parentElement.parentElement, {{ ticket.id }})">Edit</button></td>
             {% else %}
-            <td><button onclick="buyTicket(this.parentElement.parentElement, {{ ticket.id }})">Buy</button></td>
+            <td><button id="ticket-{{ ticket.name }}-buy" onclick="buyTicket(this.parentElement.parentElement, {{ ticket.id }})">Buy</button></td>
             {% endif %}
         </tr>
         {% endfor %}
@@ -64,7 +64,7 @@
     Price: <input id="sell_price" type="number" name="price"/><br/>
     Expiration Date: <input id="sell_exp_date" type="date" name="date"/><br/>
     <input type="hidden" value="{{ user.email }}" name="user"/>
-    <input type="submit"/>
+    <input id="sell_submit" type="submit"/>
 </form>
 <br/>
 <h2>Buy tickets</h2>
@@ -75,7 +75,7 @@
     Price: <input disabled id="buy_price" type="number" name="price"/><br/>
     Expiration Date: <input disabled id="buy_exp_date" type="date" name="date"/><br/>
     <input type="hidden" value="{{ user.email }}" name="user"/>
-    <input type="submit" value="Buy"/>
+    <input id="buy_submit" type="submit" value="Buy"/>
 </form>
 <br/>
 <h2>Edit ticket</h2>
