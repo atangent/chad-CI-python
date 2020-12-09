@@ -38,7 +38,7 @@ test_tickets = [
 
 class FrontEndHomePageTest(BaseCase):
 
-    @patch('qa327.backend.register_user', return_value=test_user)
+    @patch('qa327.backend.register_user', return_value=None)
     @patch('qa327.backend.get_user', return_value=None)
     def test_register_success(self, *_):
         '''
@@ -49,7 +49,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url + '/register')
 
         # fill in fields
-        self.type("#email", "test_frontend@test.com")
+        self.type("#email", "test_frontend1@test.com")
         self.type("#name", "Test Frontend")
         self.type("#password", "test_Frontend0!")
         self.type("#password2", "test_Frontend0!")
