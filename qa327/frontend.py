@@ -45,7 +45,7 @@ def register_post():
         user = bn.get_user(email)
         if user:
             error_message = "User exists"
-        elif not bn.register_user(email, name, password, password2):
+        elif bn.register_user(email, name, password, password2):
             error_message = "Failed to store user info."
 
     # if there is any error messages when registering new user
