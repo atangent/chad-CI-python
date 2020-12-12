@@ -276,7 +276,7 @@ def updateticket():
     ticket_quantity = int(request.form['quantity'])
     ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
-    ticket_date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d')
+    ticket_date = datetime.datetime.strptime(ticket_date, '%Y%m%d')
     user_email = request.form['user']
     user = bn.get_user(user_email)
 
@@ -332,7 +332,7 @@ def sellticket():
     ticket_quantity = int(request.form['quantity'])
     ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
-    ticket_date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d')
+    ticket_date = datetime.datetime.strptime(ticket_date, '%Y%m%d')
     user_email = request.form['user']
     user = bn.get_user(user_email)
 
