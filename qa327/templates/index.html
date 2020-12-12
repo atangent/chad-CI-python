@@ -62,7 +62,7 @@
     Name: <input id="sell_name" type="text" name="name"/><br/>
     Quantity: <input id="sell_quantity" type="number" name="quantity"/><br/>
     Price: <input id="sell_price" type="number" name="price"/><br/>
-    Expiration Date: <input id="sell_exp_date" type="date" name="date"/><br/>
+    Expiration Date (YYYMMDD): <input id="sell_exp_date" type="text" name="date"/><br/>
     <input type="hidden" value="{{ user.email }}" name="user"/>
     <input id="sell_submit" type="submit"/>
 </form>
@@ -73,7 +73,7 @@
     Name: <input disabled id="buy_name" type="text" name="name"/><br/>
     Quantity: <input disabled id="buy_quantity" type="number" name="quantity"/><br/>
     Price: <input disabled id="buy_price" type="number" name="price"/><br/>
-    Expiration Date: <input disabled id="buy_exp_date" type="date" name="date"/><br/>
+    Expiration Date (YYYMMDD): <input disabled id="buy_exp_date" type="text" name="date"/><br/>
     <input type="hidden" value="{{ user.email }}" name="user"/>
     <input id="buy_submit" type="submit" value="Buy"/>
 </form>
@@ -84,7 +84,7 @@
     Name: <input id="update_name" type="text" name="name"/><br/>
     Quantity: <input id="update_quantity" type="number" name="quantity"/><br/>
     Price: <input id="update_price" type="number" name="price"/><br/>
-    Expiration Date: <input id="update_exp_date" type="date" name="date"/><br/>
+    Expiration Date (YYYMMDD): <input id="update_exp_date" type="text" name="date"/><br/>
     <input type="hidden" value="{{ user.email }}" name="user"/>
     <input type="submit" value="Save"/>
 </form>
