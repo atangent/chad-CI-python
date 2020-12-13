@@ -271,16 +271,19 @@ def does_user_have_sufficient_balance(user_balance, ticket_price):
 
 @app.route('/update', methods=['POST'])
 def updateticket():
+    message = ""
+
     ticket_id = request.form['ticket_id']
     ticket_name = request.form['name']
     ticket_quantity = int(request.form['quantity'])
     ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
-    ticket_date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d')
+    try:
+        ticket_date = datetime.datetime.strptime(ticket_date, '%Y%m%d')
+    except ValueError:
+        message = "Invalid date format. Please use the format YYYMMDD, i.e. 20200421."
     user_email = request.form['user']
     user = bn.get_user(user_email)
-
-    message = ""
 
     # check ticket exists
     if not does_ticket_exist(ticket_id):
@@ -328,15 +331,18 @@ def buyticket():
 
 @app.route('/sell', methods=['POST'])
 def sellticket():
+    message = ""
+
     ticket_name = request.form['name']
     ticket_quantity = int(request.form['quantity'])
     ticket_price = float(request.form['price'])
     ticket_date = request.form['date']
-    ticket_date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d')
+    try:
+        ticket_date = datetime.datetime.strptime(ticket_date, '%Y%m%d')
+    except ValueError:
+        message = "Invalid date format. Please use the format YYYMMDD, i.e. 20200421."
     user_email = request.form['user']
     user = bn.get_user(user_email)
-
-    message = ""
 
     # check name
     if not is_ticket_name_valid(ticket_name):
