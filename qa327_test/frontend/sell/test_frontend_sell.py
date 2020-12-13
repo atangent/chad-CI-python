@@ -54,16 +54,7 @@ nextdayobj = datetime.now() + timedelta(days=1)
 nextday = nextdayobj.strftime('%Y%m%d')
 
 class FrontEndSellTest(BaseCase):
-    '''
-    @patch('qa327.backend.get_user', return_value=test_user)
-        
-        self.open(base_url + '/logout')
-        self.open(base_url + '/login')
-        self.type("#email", "test_frontend@test.com")
-        self.type("#password", "test_Frontend0!")
-        self.click('input[type="submit"]')
-        self.open(base_url)
-    '''
+
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.sell_ticket', return_value=None)
     def test_ticket_works(self, *_):
