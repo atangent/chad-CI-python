@@ -53,6 +53,9 @@ test_user = User(
 nextdayobj = datetime.now() + timedelta(days=1)
 nextday = nextdayobj.strftime('%Y%m%d')
 
+yesterdayobj = datetime.now() - timedelta(days=1)
+yesterday = yesterdayobj.strftime('%Y%m%d')
+
 class FrontEndSellTest(BaseCase):
 
     @patch('qa327.backend.get_user', return_value=test_user)
@@ -170,7 +173,7 @@ class FrontEndSellTest(BaseCase):
         self.click('input[type="submit"]')
         self.open(base_url)
 
-        # test quantity too many
+        # test invalid date format
         self.type("#sell_name", "name")
         self.type("#sell_quantity", "5")
         self.type("#sell_price", "15")
@@ -179,7 +182,43 @@ class FrontEndSellTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("Ticket date is invalid.", "#message")
 
-    
+        # test invalid date
+        self.type("#sell_name", "name")
+        self.type("#sell_quantity", "5")
+        self.type("#sell_price", "15")
+        self.type("#sell_exp_date", yesterday)
+        self.click('#sell_submit')
+        self.assert_element("#message")
+        self.assert_text("Ticket date is invalid.", "#message")
+
+    @patch('qa327.backend.get_user', return_value=test_user)
+    def test_ticket_price(self, *_):
+        # log in user
+        self.open(base_url + '/logout')
+        self.open(base_url + '/login')
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "test_Frontend0!")
+        self.click('input[type="submit"]')
+        self.open(base_url)
+
+        # test price too little
+        self.type("#sell_name", "testticket")
+        self.type("#sell_quantity", "5")
+        self.type("#sell_price", "-1")
+        self.type("#sell_exp_date", nextday)
+        self.click('#sell_submit')
+        self.assert_element("#message")
+        self.assert_text("Ticket price is invalid.", "#message")
+
+        # test price too large
+        self.type("#sell_name", "testticket")
+        self.type("#sell_quantity", "5")
+        self.type("#sell_price", "125")
+        self.type("#sell_exp_date", nextday)
+        self.click('#sell_submit')
+        self.assert_element("#message")
+        self.assert_text("Ticket price is invalid.", "#message")
+
 
 
 
