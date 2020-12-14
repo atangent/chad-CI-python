@@ -55,7 +55,7 @@ nextday = nextdayobj.strftime('%Y%m%d')
 yesterdayobj = datetime.now() - timedelta(days=1)
 yesterday = yesterdayobj.strftime('%Y%m%d')
 
-@pytest.mark.focus
+
 class FrontEndUpdateTest(BaseCase):
 
     @patch('qa327.backend.get_user', return_value=test_user)
