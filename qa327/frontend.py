@@ -258,6 +258,14 @@ def is_ticket_date_valid(ticket_date):
     :param ticket_date: the date of the ticket to be tested
     :returns: True if the ticket date satisfies all requirements
     """
+    try:
+        if isinstance(ticket_date, str):
+            datetime.datetime.strptime(ticket_date, "%Y%m%d")
+    except ValueError:
+        return False
+
+    if isinstance(ticket_date, str):
+        return datetime.datetime.strptime(ticket_date, "%Y%m%d") > datetime.datetime.now()
     return ticket_date > datetime.datetime.now()
 
 def does_user_have_sufficient_balance(user_balance, ticket_price):
