@@ -111,3 +111,4 @@ latest_logs
 db.sqlite
 ~$tailed Test Plan.docx
 ~WRL0005.tmp
+mysql_data
